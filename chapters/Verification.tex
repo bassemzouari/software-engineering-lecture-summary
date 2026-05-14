@@ -1,0 +1,1122 @@
+\section{Verification}
+\subsection{Part I: Introduction}
+\subsubsection*{Software Quality}
+\begin{defBox}[title=How to assure software quality? The big picture]
+    Define a \red{quality assurance (QA) plan} (\enquote{\blue{Plan zur Qualitätssicherung}}) (must be integrated into the software development process)
+    \begin{itemize}
+        \item Constantly \red{assess} design \red{quality} (quantitative, qualitative)
+        \begin{infoBox}
+            Bewerten Sie die Designqualität kontinuierlich: sowohl quantitative als qualitative Methoden sollten angewendet werden, um die Qualität der Entwürfe zu messen
+        \end{infoBox}
+        \item Be proficient in applying time-tested \red{design principles}
+        \begin{infoBox}
+            Beherrschen Sie bewährte Entwurfsprinzipien: Nutzen Sie zeitlose Prinzipien des Softwaredesigns, um solide und wartbare Lösungen zu entwickeln
+        \end{infoBox}
+        \item Use tools and design techniques that help to achieve quality
+        \item Use \red{design pattern} to learn from and reuse proven solutions to recurring problems
+        \item Systematically \red{verify} correctness \& performance of design
+        \item \red{Validate} fulfillment of requirements
+    \end{itemize}
+\end{defBox}
+\subsubsection*{Validation vs. Verification}
+\begin{defBox}[title=Validation]
+    \red{Validation} ensures that a software system meets the \red{customer's expectation}
+    \begin{center}
+        \red{Are we building the right system?}
+    \end{center}
+    \begin{itemize}
+        \item Is the implemented feature set as intended and complete?
+        \item Does it fit into organization's workflow?
+    \end{itemize}
+\end{defBox}
+\begin{defBox}
+    Validation aligns \red{problem space} with \red{solution space}//
+    It hinges on correctly performed \red{requirements analysis}//
+    \blue{Cannot be done without involving customer / user}
+\end{defBox}
+\subsubsection*{Validation vs. Verification}
+\begin{defBox}[title=Verification]
+    \red{Verification} ensures correctness against \red{system specification}
+    \begin{center}
+        \red{Are we building the system right?}
+    \end{center}
+    \begin{itemize}
+        \item Do the implemented functions work as specified?
+        \item How does the system react to faults?
+    \end{itemize}
+\end{defBox}
+\begin{defBox}
+    Verification is performed in \red{solution spaces} by \red{manufacturer}
+\end{defBox}
+\begin{infoBox}[title=Verification]
+    \begin{itemize}
+        \item \fatsf{Definition:} Überprüfung, ob das Produkt korrekt gemäß seiner Spezifikation entwickelt wurde
+        \item \fatsf{Ziel:} Sicherstellen, dass die Software den definierten Anforderungen, Regeln und Standards entspricht
+        \item \fatsf{Fokus:} \enquote{Bauen wir das Produkt richtig?}
+        \item \fatsf{Methoden:}
+        \begin{itemize}
+            \item Reviews (z.B. Code- oder Design-Reviews)
+            \item Inspektionen
+            \item Statische Tests
+            \item Statische Analysen
+        \end{itemize}
+        \item \fatsf{Beispiel:} Prüfen, ob der Code korrekt implementiert wurde, basierend auf der Spezifikation oder ob das Design mit den Anforderungen übereinstimmt
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Validation]
+    \begin{itemize}
+        \item \fatsf{Definition:} Überprüfung, ob das entwickelte Produkt tatsächlich die Bedürfnisse und Erwartungen der Nutzer erfüllt
+        \item \fatsf{Ziel:} Sicherstellen, dass die Software \enquote{das richtige Produkt} ist, also den Zweck erfüllt
+        \item \fatsf{Fokus:} \enquote{Bauen wir das richtige Produkt?}
+        \item \fatsf{Methoden:}
+        \begin{itemize}
+            \item Funktionale Tests
+            \item Benutzertests
+            \item Usability-Tests
+            \item Prototyping
+            \item \fatsf{Beispiel:} Testen, ob ein Benutzer mit der Software eine bestimmte Aufgabe effizient lösen kann, oder ob die Funktionalitäten für den beabsichtigten Einsatz geeignet sind.
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Overview of Verification Techniques}
+\begin{defBox}[title=Static]
+    Static techniques do \red{not} require to actually execute code
+    \begin{itemize}
+        \item \red{Code review:} Applicable at \red{any} stage of development process
+        \item \red{Static checking:} \red{Automated} analyses: type checks, bug finders, ...
+        \item \red{Formale verification:} Ensures program satisfies a formal \red{property}
+    \end{itemize}
+\end{defBox}
+\begin{defBox}[title=Dynamic]
+    Dynamic techniques \red{do} require code to be executed
+    \begin{itemize}
+        \item \red{Testing:} Assert correct program behavior for selected \red{inputs}
+        \item \red{Runtime monitoring:} Instrument program with safety/security \red{assertions} whose violation is indicated during execution
+    \end{itemize}
+\end{defBox}
+\subsubsection*{What You Will Learn about Verification}
+\begin{defBox}[title=In this Course:]
+    \begin{itemize}
+        \item \red{Code reviews} (\enquote{\blue{Code-Review}}) briefly (have to experience it to appreciate this technique)
+        \item \red{Static checking} \& \red{Formal verification} briefly (contents of course \enquote{Formale Methode im Softwareentwurf})
+        \item \red{Testing} discussed \blue{in detail} (by far the most importent verification technique in practice)
+        \item \red{Runtime monitoring} (\enquote{\blue{Laufzeitbeobachtung}}) in passing (mostly relevant for specific application areas, for example, security)
+    \end{itemize}
+\end{defBox}
+\subsection{Part II: Code Reviews}
+\subsubsection*{Software Inspections: Code Reviews or Code Inspections}
+\begin{defBox}[title=Definition (Code Review)]
+    A \red{code review} is a structured inspection \red{process} of a piece of software, performed in a \red{team}, with the goal of finding possible \red{defects} (errors, poor code, deviations from conventions)
+\end{defBox}
+\blue{The goal is not to discuss broader design issues or to validate requirements}
+\subsubsection*{Building Blocks of Code Reviews}
+\begin{defBox}
+    Prerequisite: up-to-date \red{code} and complete \red{specification} available Code needs not to be complete or executable
+\end{defBox}
+\begin{defBox}[title=Team Members Take Roles]
+    Author/owner, inspector/reader, scribe, chair/moderator (minimal setup)
+\end{defBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Building Blocks of Code Reviews.jpeg}
+\end{figure}
+\subsubsection*{Code Review: Check Lists}
+\begin{defBox}[title=Code Reviews Driven by \fatsf{Check Lists}]
+    Try to detect specific fault classes\\
+    \blue{Data fault} All variables initialized?\\
+    \blue{I/O fault} All input variables used?
+\end{defBox}
+\begin{defBox}
+    Check lists must be \red{adapted} to project environment: Programming language, coding standards, used static analysis, etc.
+\end{defBox}
+\begin{defBox}[title=Speed?]
+    \begin{itemize}
+        \item Ca. 500 statements / hour at overview
+        \item Ca. 100 statements / hour at inspection
+    \end{itemize}
+    Limit length of meeting to ca. 2 hours
+\end{defBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Code Review: Check Lists.jpeg}
+\end{figure}
+\subsubsection*{Code Reviews: Advantages and Obstacles}
+\begin{defBox}[title=Advantages of Code Reviews]
+    \begin{itemize}
+        \item Strong \red{empirical evidence} that they \blue{work} and \blue{save cost}
+        \item Help to \red{distribute knowledge} of code among team members
+        \item Can find defects \red{before} they show in tests (or even rolled out code)
+        \item Can \red{improve} code quality (including documentation)
+        \item \red{No executable} system required (find defects \blue{early})
+    \end{itemize}
+\end{defBox}
+\begin{defBox}[title=Obstacles against Code Reviews]
+    \begin{itemize}
+        \item Requires \red{mature} personolities: team members may feel criticized
+        \item Under time pressure: feeling that \red{not productive}
+        \item Only works well when \red{properly} conducted
+    \end{itemize}
+\end{defBox}
+\subsection{Part III: Software Testing}
+\subsubsection*{Testing}
+\enquote{Program testing can be used to show the presence of bugs, but never to show their absence!}
+\begin{defBox}[title=Why is that so?]
+    Non-trivial programs have infinitely many, or at least infeasibly many, different execution paths - it is impossible to test them all
+\end{defBox}
+\begin{defBox}
+    Nevertheless, testing is an exceedingly \red{useful} and wide-spread verification method, even if sometimes only due to lack of better alternatives
+\end{defBox}
+\subsubsection*{What is a Program Test?}
+\begin{defBox}[title=Constituents of a Program Test]
+    \begin{itemize}
+        \item The \red{system} or \red{implementation under test} (SUT, IUT): Die Software oder Komponente, die getestet wird
+        \item The test \red{input(s)}
+        \item The runtime environment, preparation, run, clean-up: \red{test harness} (\enquote{\blue{Test-Harnisch}}, \enquote{\blue{Testrahmen}}, \enquote{\blue{Gerüst}})
+        \begin{infoBox}[title=Die Laufzeitumgebung]
+            \begin{itemize}
+                \item \fatsf{Definition:} Die Umgebung, in der die Tests ausgeführt werden, einschließlich Vorbereitung, Ausführung und Bereinigung
+                \item \fatsf{Komponenten der Laufzeitumgebung:}
+                \begin{itemize}
+                    \item \fatsf{Test-Harnisch/Test-Rahmen/Test-Gerüst:}
+                    \begin{itemize}
+                        \item Werkzeuge oder Frameworks, die das SUI während der Tests unterstützen (z.B. Initialisierung von Daten, Simulation von Abhängigkeiten)
+                        \item Beispiele: JUnit, pytest, Selenium
+                    \end{itemize}
+                    \item \fatsf{Vorbereitung (Setup):} Konfiguration der Testumgebung (z.B. Start von Datenbanken)
+                    \item \fatsf{Bereinigung (Teardown):} Rücksetzen der Umgebung nach dem Test (z.B. Löschen von Testdaten)
+                \end{itemize}
+            \end{itemize}
+        \end{infoBox}
+        \item A test \red{verdict} (Testergebnis) (pass/fail) given by a \red{test oracle} (\enquote{\blue{Urteil}}. \enquote{\blue{Testorakel}})
+    \end{itemize}
+\end{defBox}
+\subsubsection*{Test Levels}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Test Levels.jpeg}
+\end{figure}
+\subsubsection*{Test Plan}
+\begin{defBox}[title=What is a Test Plan?]
+    \blue{Detailed description of the testing process}\\
+    \red{Document} intended to be read by humans
+    \begin{itemize}
+        \item \red{Work plan:} phases, schedule
+        \item Testing \red{procedures}
+        \item Explanation of the $\Rightarrow$ \red{test design}
+        \item \blue{Test documentation as important as code documentation}
+    \end{itemize}
+\end{defBox}
+\subsubsection*{Test Design}
+\begin{enumerate}
+    \item Identify and analyse the \red{responsibilities} of the IUT
+    \begin{itemize}
+        \item Use \red{pre- and postconditions} in use cases
+        \item Use minimal and success \red{guarantees} in fully dressed use cases
+        \item Analyze distribution of \red{responsibilities} in design
+    \end{itemize}
+    \item \red{Add} test cases based on
+    \begin{itemize}
+        \item Use Case, Design, Code \red{analysis}
+        \item Suspicions, minimal success \red{guarantees}
+        \item General \red{heuristics} (for example, domain/expression boundaries)
+    \end{itemize}
+    \item Determine for each test case how \red{verdict} is reached: Provide expected results, programmed or human \red{test oracle}
+\end{enumerate}
+\begin{defBox}
+    Testing must be based on a \red{fault model} \\
+    Exhaustive testing impossible: Assumptions needed, \red{where} faults are found, \red{which} need to be found
+\end{defBox}
+\subsubsection*{Test Automation Prospects}
+\begin{defBox}
+    Testing is a \red{very expensive} activity: Ca. 15-25\% of total development cost (higher estimated exist)
+\end{defBox}
+\begin{defBox}[title=Which Aspects of Testing can be \fatsf{Automated}?]
+    \begin{enumerate}
+        \item \red{Running the tests} (on nighly basis, after each change, etc.) (state-of-art, supported by build tools)
+        \item Generating \red{test inputs} (increasingly done)
+        \begin{enumerate}
+            \item Code-driven
+            \item Model-driven
+            \item Data-driven
+        \end{enumerate}
+        \item Generating \red{test verdict}
+        \begin{enumerate}
+            \item Test \red{oracle} is small program, added to test harness (frequent)
+            \item Oracle generated automatically from \red{formal specification} (rare)
+        \end{enumerate}
+    \end{enumerate}
+\end{defBox}
+\begin{infoBox}[title=Ausfürhren der Tests]
+    \begin{itemize}
+        \item \fatsf{Definition:} Automatisierung der Testausführung in regelmäßgien Abständen oder bei bestimmten Auslösern
+        \item \fatsf{Beispiele:}
+        \begin{itemize}
+            \item Ausführen von Tests im Rahmen von \fatsf{Nighly Builds}
+            \item Automatisches Testen nach jeder Codeänderung (z.B. in \fatsf{Continuous Integration/Continuous Deployment}-Pipelines)
+        \end{itemize}
+        \item \fatsf{Atueller Stand der Technik:}
+        \begin{itemize}
+            \item Weitgehend automatisiert und unterstützt durch moderne Build-Tools wie Jenkins, GitLab CI/CD, CircleCI oder Azure Pipelines
+        \end{itemize}
+        \item \fatsf{Vorteile:}
+        \begin{itemize}
+            \item Frühzeitiges Erkennen von Fehlern
+            \item Konsistente Durchführung von Regressionstests
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Generierung von Testeingaben]
+    \begin{itemize}
+        \item \fatsf{Definition:} Automatisierung der Erstellung von Eingabedate, die für das Testen des Systems verwendet werden
+        \item \fatsf{Ansätze:}
+        \begin{enumerate}
+            \item \fatsf{Code-basiert:}
+            \begin{itemize}
+                \item Eingaben werden durch Codeanalyse generiert (z.B. \fatsf{Coverage guided Fuzzing})
+                \item Beispiel-Tools: AFL (American Fuzzy Lop) LibFuzzer
+            \end{itemize}
+            \item \fatsf{Modellbasiert:}
+            \begin{itemize}
+                \item Eingaben werden aus einem Modell generiert, das das Verhalten oder die Einschränkungen des Systems beschreibt
+                \item Beispiel-Tools: QuickCheck, TLA+
+            \end{itemize}
+            \item \fatsf{Datengetrieben:}
+            \begin{itemize}
+                \item Eingaben werden aus externen Datensätzen oder Vorlagen abgeleitet
+                \item Einsatzbereiche: Testen von APIs oder datenintensiven Anwendungen
+            \end{itemize}
+        \end{enumerate}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Generierung des Testergebnisses (Test Verdict)]
+    \begin{itemize}
+        \item \fatsf{Defintion:} Automatisierung der Bewertung, ob ein Test erfolgreich war oder fehlgeschlagen ist
+        \item \fatsf{Ansätze:}
+        \begin{enumerate}
+            \item \fatsf{Testorakel als Teil des Test-Harnischs:}
+            \begin{itemize}
+                \item Ein \fatsf{kleines Programm} wird als Testorakel in den Test-Harnisch eingebettet, um die Testergebnisse zu bewerten (häufiger Ansatz)
+                \item Beispiel: Vergleich von Soll- und Ist-Werten bei einer Funktion
+            \end{itemize}
+            \item \fatsf{Automatische Generierung des Orakels aus formalen Spezifikationen:}
+            \begin{itemize}
+                \item Das Testorakel wird aus einer formales Spezifikation abgeleitet (selten, da oft komplex)
+                \item Einsatzbereiche: Formale Verifikationssysteme (z.B. TLA+, Z-Spezifikation)
+            \end{itemize}
+        \end{enumerate}
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Test Automation: Running the tests}
+\begin{defBox}[title=Tasks of Test Automation System]
+    \begin{enumerate}
+        \item Set up test environment
+        \begin{itemize}
+            \item Start servers (for example, database), establish network connection, register services
+        \end{itemize}
+        \item Start IUT
+        \item Bring IUT into required pretest state configuration
+        \begin{itemize}
+            \item Load required data tables, create required objects
+        \end{itemize}
+        \item Set test inputs
+        \item Evaluate output + record verdict
+        \item Clean up environment
+        \begin{itemize}
+            \item Delete files, stop services, reset data
+        \end{itemize}
+    \end{enumerate}
+\end{defBox}
+\begin{defBox}
+    \red{Manual} tasks remain when generating test automation scripts: Creating test \red{input}, writing test \red{oracle}
+\end{defBox}
+\subsubsection*{Test Goal}
+\begin{defBox}[title=What can be Achieved by Testing?]
+    Establish \red{sufficient} trust that system is (minimally) operational by exercising the interfaces between its parts
+\end{defBox}
+\red{Comprehensive testing} \blue{encompasses the following activities:}
+\begin{enumerate}
+    \item \red{Execute} test suite and pass \red{verdict} on each test case
+    \item Use \red{coverage tool} to instrument the IUT
+    \item Re-run test suite and judge reported \red{coverage}
+    \item If necessary, \red{add} test cases to increase coverage
+    \item \red{Stop} testing once coverage goal (Abdeckungsziel) is met \& all tests pass
+\end{enumerate}
+\begin{defBox}
+    Remember: \red{Exhaustive} testing is not possible!
+\end{defBox}
+\subsubsection*{Test Input}
+\begin{defBox}[title=Definition(Test(Data) Point)]
+    A \red{test point} is a specific \red{value} for
+    \begin{itemize}
+        \item a test case \red{input} or
+        \item a state variable
+    \end{itemize}
+    The test point is selected from a domain.\\
+    The \red{domain} is the set of values that input or state variables can assume
+\end{defBox}
+\begin{infoBox}
+    \begin{itemize}
+        \item \fatsf{Testpunkt:} Ein bestimmter Wert für die Eingabe oder den Zustand während eines Tests
+        \item \fatsf{Domain:} Die Gesamtheit aller möglichen Werte, die die Eingebe- oder Zustandsvariablen eines Systems annehmen können
+    \end{itemize}
+\end{infoBox}
+\begin{defBox}[title=Heuristics for Test Point Selection]
+    \begin{itemize}
+        \item \red{Equivalence} classes (to be refined later) (only one test point for expected equivalent outcome)
+        \item \red{Boundary} values (min/max of ordered domain, pivot of comparison)
+        \item \red{Special} values (\fatsf{null}, other values with specific semantics)
+    \end{itemize}
+\end{defBox}
+\subsubsection*{Test Case, Test Suite, Test Run}
+\begin{defBox}[title=Definition (Test Case\, Test Suite)]
+    A \red{test case} consists of:
+    \begin{itemize}
+        \item Pretest state of the IUT, 
+        \item test point/conditions: test input,
+        \item expected result.
+    \end{itemize}
+    A collection of test cases is called \red{test suite}
+\end{defBox}
+\begin{defBox}[title=Definition (Test Run)]
+    A \red{test run} is the execution (with results) of a test suite on the IUT.\\
+    A test whose results match the expected results gets the \blue{verdict} \red{pass}, otherwise the test \red{failed}
+\end{defBox}
+\subsubsection*{Test Driver, Fault, Failure}
+\begin{defBox}[title=Definition(Test Driver\, Test Harness)]
+    \begin{itemize}
+        \item A \red{test driver (\enquote{\blue{Treiber}})} is a class or utility program that applies test cases to an IUT
+        \item The \red{test harness} (\enquote{\blue{Gerüst}}) is a system of test drivers and other tools to support test execution
+    \end{itemize}
+\end{defBox}
+\begin{defBox}[title=Definition (Fault\, Failure)]
+    \begin{itemize}
+        \item A software \red{fault} (\enquote{\blue{Fehler}}) is missing or incorrect code
+        \item A \red{failure} (\enquote{\blue{Versagen}}) is the manifested inability of a system / component to perform a required function within specified limits
+    \end{itemize}
+\end{defBox}
+\subsubsection*{A Popular Unit Test Framework: JUnit}
+\begin{codeBlock}{}
+    public class AccountTest{
+        Account account;
+
+        @BeforeEach
+        public void setup(){
+            account = new Account(100);
+        }
+
+        @AfterEach
+        public void tearDown(){ account = null; }
+
+        @Test
+        public void successfulWithdrawTest(){
+            boolean success = account.withdraw(50);
+            assertTrue(success);
+        }
+
+        @Test
+        public void unSuccessfulWithdrawTest(){
+            assertFalse(account.withdraw(150));
+        }
+    }
+\end{codeBlock}
+\begin{defBox}[title=Test Framework: JUnit]
+    \begin{itemize}
+        \item Methods annotated with \red{@BeforeEach} establish pretest state
+        \item Methods annotated with \red{@AfterEach} executed after test (perform cleanup)
+        \item Methods annotated with \red{@Test} implement test: are executed
+        \item \red{assertTrue, assertFalse, ...} evaluate result and record verdict
+    \end{itemize}
+\end{defBox}
+\subsubsection*{Testing Case Study}
+\begin{defBox}[title=Input]
+    Read three integer values from the \red{command line}\\
+    The three values represent the relative lengths of the sides of a triangle
+\end{defBox}
+\begin{defBox}[title=Output]
+    Tells whether the triangle is
+    \begin{itemize}
+        \item \red{Scalene:} no two sides are equal
+        \item \red{Isosceles:} exactly two sides are equal
+        \item \red{Equilateral:} all sides are equal
+    \end{itemize}
+\end{defBox}
+\begin{defBox}
+    Create a \red{test suite} for this program that you consider to be \red{comprehensive}
+\end{defBox}
+\subsubsection*{Test Plan for Triangle Example (Excerpt)}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Test Plan for Triangle Example.jpeg}
+\end{figure}
+\subsection{Part IV: Test Coverage}
+\subsubsection*{Test Coverage: When to Stop Testing?}
+\begin{defBox}[title=Structural Criteria (Code Structure)]
+    \red{Statement Coverage (SC)} each \red{statement} executed at least once\\
+    \red{Basic Block Coverage (BBC)} each \red{basic block} executed at least once\\
+    \red{Branch Coverage (BC)} each \red{outgoing edge} from a node in the control flow graph executed at least once\\
+    \red{Path Coverage (PC)} each \red{path} in the control flow graph executed at least once
+\end{defBox}
+\begin{defBox}[title=Logic-based Criteria (Logical Case Distinctions)]
+    \red{Condition Coverage (CC)} each \red{condition} evaluated as true and as false in at least one test run\\
+    \red{Decision Coverage (DC)} each \red{decision} (guard) evaluated as true and as false in at least one test run\\
+    \red{Modified Condition Decision Coverage (MCDC)} combines aspects of CC, DC \& independence test\\
+    \red{Multiple-condition Coverage (MCC)} all true-false \red{combinations} of conditions exercised in at least one test run
+\end{defBox}
+\clearpage
+\begin{defBox}[title=Structural Coverage]
+    Structural Coverage is based on the \red{control flow graph} (CFG) of a program
+\end{defBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Verification Images/Structural Converage and CFG.jpeg}
+\end{figure}
+\begin{defBox}[title=Definition]
+    An \red{execution path} of a program is a \blue{complete} path through the CFG. \\
+    A path that can actually be taken is called \red{feasible}.
+\end{defBox}
+\subsubsection*{Structural Coverage: Statement Coverage}
+\begin{defBox}[title=Definition (Statement Coverage (SC) Criterion)]
+    A test suite TS achieves \red{statement coverage} for a program p if:\\
+    for any statement s in p there is a test in TS under which s is executed.
+\end{defBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Statement Coverage.jpeg}
+\end{figure}
+\subsubsection*{Structural Coverage: Basic Block Coverage}
+\begin{defBox}[title=Coverage Criterion for Byte Code]
+    \red{Basic block coverage} very similar to statement coverage - main difference usually applied to machine or byte code
+\end{defBox}
+\begin{defBox}[title=Definition (Basic Block Reminder)]
+    A \red{basic block} is a \red{maximal} sequence of \red{non-branching} program statements (or instructions) that are always executed \red{together} or not at all.\\
+    Execution of a basic block starts with the \red{first statement}, only the \red{final} statement may branch or return (jump).
+\end{defBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Basic Block Coverage.jpeg}
+\end{figure}
+\subsubsection*{Structural Coverage: Branch Coverage}
+\begin{defBox}[title=Definition (Branch Coverage (BC))]
+    A test suite TS achieves \red{branch coverage} for a program p if:\\
+    \red{Each edge} in the CFG (control flow branch) is executed by some test
+\end{defBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Branch Coverage 1.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Branch Coverage 2.jpeg}
+\end{figure}
+\subsubsection*{Structural Coverage: Path Coverage}
+\begin{defBox}[title=Definition (Path Coverage (PC))]
+    \red{Path coverage} is satisfied by a test suite TS if for every \red{execution path} ep through the CFG there is at least one test in TS causing ep to be taken
+\end{defBox}
+\begin{codeBlock}{}
+    if (i >= 0){
+        m = 1;
+    }
+    if (j < 0){
+        m = 2;
+    }
+\end{codeBlock}
+\begin{itemize}
+    \item How many execution paths? 4
+    \item Test suite with PC?\\
+    TC $\overset{\wedge}{=}$ (i, j): \{(-1, 1), (-1, -1), (1, 1), (1, -1)\}
+\end{itemize}
+\blue{PC implies BC}
+\begin{defBox}
+    PC unachievable in practice: unbounded \# of paths or not all paths feasible
+\end{defBox}
+\subsubsection*{Logic Coverage: Condition vs. Decision}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Logic Coverage.jpeg}
+\end{figure}
+\begin{defBox}[title=Definition(Condition)]
+    A \red{condition} is a Boolean code expression that cannot be further divided into Boolean subexpressions:
+    \begin{itemize}
+        \item Boolean variable or literal
+        \item Comparision expression between variables or literals
+        \item \enquote{instanceof} expression, etc.
+    \end{itemize}
+\end{defBox}
+\begin{defBox}[title=Definition(Decision)]
+    A \red{decision} is the Boolean expression constituting the \blue{guard} of a conditional or loop statement.
+\end{defBox}
+\subsubsection*{Logic Coverage: Decision Coverage}
+\blue{Let p be a program and D(p) the set of all} \red{decisions} \blue{in p}
+\begin{defBox}[title=Definition (Decision Coverage)]
+    A test suite TS achieves \red{decision coverage} if every d $\in$ D(p) is evaluated at least once to false and once to true by tests in TS.\\
+    (Assume d is not always false or true)
+\end{defBox}
+\begin{defBox}[title=Example]
+    if (a >= 0 \& b < 0){ i = 0; }
+    \begin{itemize}
+        \item Test suite with decision coverage? TC $\overset{\wedge}{=}$ (a, b) : \{(-1, -1), (1, -1)\}
+    \end{itemize}
+\end{defBox}
+\subsubsection*{Logic Coverage: Condition Coverage}
+\blue{Let p be a program and C(p) the set of all} \red{occurrences of} \blue{conditions in D(p)}
+\begin{defBox}[title=Definition(Condition Coverage)]
+    A test suite TS achieves \red{condition coverage} if every c $\in$ C(p) is evaluated t least once to false and once to true by tests in TS.
+\end{defBox}
+\begin{defBox}[title=Example]
+    if (a >= 0 \& b < 0) \{ i = 0; \}
+    \begin{itemize}
+        \item Test suite with condition coverage? TC $\overset{\wedge}{=}$ (a, b) : \{(-1, 1), (1, 1), (-1, -1)\}
+        \item Test suite with condition coverage \red{and} decision coverage?\\
+        TC $\overset{\wedge}{=}$ (a, b) : \{(-1, 1), (1, -1)\}
+    \end{itemize}
+\end{defBox}
+\subsubsection*{Logic Coverage: Modified Condition Decision Coverage}
+\begin{defBox}[title=Definition (Modified Condition-Decision Coverage (MCDC))]
+    For one \red{occurrence} of condition c \red{inside} decision d,\\
+    MCDC is satisfied by a test suite TS if 
+    \begin{enumerate}
+        \item it evaluated d at least twice,
+        \begin{itemize}
+            \item once where c evaluates to false,
+            \item once where c evaluates to true,
+        \end{itemize}
+        \item d evaluates differently in both,
+        \item all other conditions in d evaluate identically in both \red{or} these are not evaluated at all in at least one case.
+    \end{enumerate}
+    MCDC is satisfied by TS if it satisfies MCDC for all occurrences c $\in$ C(p).
+\end{defBox}
+\begin{defBox}
+    MCDC often required when developing safety-critical software
+\end{defBox}
+\blue{\enquote{Each condition must have an influence on the evaluation of the decision and is independent of other conditions}}
+\begin{defBox}[title=Example (MCDC)]
+    Decision: \red{a>=0 \& (b<0 | c)}
+    \begin{itemize}
+        \item Does TS = \{(1, 1, true), (-1, 1, false)\}, TC $\overset{\wedge}{=}$ (a, b, c) satisfy MCDC for condition \blue{a>=0}?\\
+        \red{No} (does not evaluate condition \blue{c} to same value in both test cases)
+        \item Does TS = \{(1, 1, false), (-1, 1, false)\} satisfy MCDC for condition \blue{a>=0}?\\
+        \red{No} (does not evaluate whole decision differently)
+        \item Does TS = \{(1, 1, true), (-1, 1, true)\} satisfy MCDC for condition a>=0?\\
+        \blue{Yes}
+    \end{itemize}
+\end{defBox}
+\clearpage
+\subsection{Part V: Test Automation \& Tool Support}
+\subsubsection*{Automated Test Case Generation (ATCG)}
+\begin{infoBox}
+    Das Schreiben von Testfällen mit guter Abdeckung ist sehr zeitaufwendig. ATCG bietet zwei grundlegende Ansätze:
+    \begin{enumerate}
+        \item \fatsf{White-Box-Ansatz (code-basiert)}\\
+        Hierbei wird der Code der zu testenden Einheit (IUT - "Implementation Under Test") analysiert, um eine möglichst hohe Abdeckung zu erreichen
+        \begin{itemize}
+            \item \fatsf{Syntaktische Ansätze:}
+            \begin{itemize}
+                \item Scannen nach Bedingungen und deren Auswertung
+                \item Geeignet für logikbasierte Abdeckungsziele
+                \item Kann Überapproximation enthalten (z.B. unerreichbarer Code oder nicht realisierbare Entscheidungen)
+            \end{itemize}
+            \item \fatsf{Symbolische Ausführung:}
+            \begin{itemize}
+                \item Entfaltung des Kontrollflussgraphen (CFG) mit symbolischen Werten
+                \item Eignet sich auch für strukturelle Abdeckungskriterien
+                \item Kann Unterapproximation beinhalten (z.B. nicht getesteter, aber erreichbarer Code)
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Black-Box-Ansatz}\\
+        Hier wird entweder die Eingabedatenstruktur oder ein Modell des IUT analysiert, ohne direkten Block auf den Code
+        \begin{itemize}
+            \item \fatsf{Herausforderungen:}
+            \begin{itemize}
+                \item Bibliothekaufrufe, die schwer zu testen sind
+                \item Irrelevante Testfälle, die keine zusätzlichen Erkenntnisse bringen
+                \item Tiefe Schleifen oder Rekursionen, die schwer abzudecken sind
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Further Test Automation}
+\begin{infoBox}[title=Test Coverage Recording (Testabdeckungs-Aufzeichnung)]
+    Dieser Ansatz hilft nicht beim Schreiben von Testfällen, sondern dabei zu erkennen, wann genug getestet wurde.\\
+    \fatsf{Schritte:}
+    \begin{enumerate}
+        \item \fatsf{Instrumentierung der IUT (Implementation Under Test)}
+        \begin{itemize}
+            \item Der Code wird mit zusätzlichen Anweisungen versehen, zm zu verfolgen welche Teile ausgeführt werden
+        \end{itemize}
+        \item \fatsf{Testausführung und Datenaufzeichnung}
+        \begin{itemize}
+            \item Während die Testsuite läuft, werden Abdeckungsdaten gesammelt
+        \end{itemize}
+        \item \fatsf{Analyse und Anzeige der Testergebnisse}
+        \begin{itemize}
+            \item Berichte, welche Codebereiche getestet wurden und welche nicht
+        \end{itemize}
+    \end{enumerate}
+    \fatsf{Beispiel:}\\
+    Ein Entwickler verwendet \fatsf{JaCoCo} für Java oder \fatsf{Coverage.py} für Python, um zu sehen, welche Codezeilen ausgeführt wurden
+\end{infoBox}
+\begin{infoBox}[title=Test Oracle Synthesis (Erstellung von Test-Orakeln)]
+    Ein \fatsf{Test-Orakel} entscheidet, ob ein Test bestanden oder fehlgeschlagen ist\\
+    \fatsf{Arten von Test-Orakeln:}
+    \begin{itemize}
+        \item \fatsf{Manuelles Orakel:}
+        \begin{itemize}
+            \item Ein Tester überprüft das Ergebnis $\rightarrow$ zeitaufwendig, fehleranfällig
+        \end{itemize}
+        \item \fatsf{Kodiertes Orakel (z.B. Assertions in JUnit):}
+        \begin{itemize}
+            \item Erfordert Expertenwissen, schwer zu pflegen
+        \end{itemize}
+    \end{itemize}
+    \fatsf{Lösung:} Spezifikation in einer \fatsf{formalen Sprache} schreiben und daraus ein Test-Orakel generieren\\
+    \fatsf{Herausforderungen:}
+    \begin{itemize}
+        \item Effiziente Generierung von Code aus einer \fatsf{deklarativen Spezifikation}
+        \item Nicht alle Systeme lassen sich einfach in formale Regeln überführen
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Automatic Static Verification Techniques}
+\begin{infoBox}[title=Static Checking (Statische Überprüfung)]
+    \fatsf{Wie funktioniert es?}
+    \begin{itemize}
+        \item Analysiert den \fatsf{Kontrollflussgraphen (CFG)} der IUT (Implementation under Test)
+        \item Nutzt \fatsf{Constraint Solving} zur Erkennung von \fatsf{Laufzeitfehlern, Endlichkeit (Liveness) und Informationsfluss-Problemen}
+        \item Vollautomatisch, kann aber \fatsf{zu viele false positives} erzeugen
+        \item \fatsf{Polyzeit-Algorithmus}, d.h. skaliert gut für große Codebasen
+    \end{itemize}
+    Ein Tool wie \fatsf{SpotBugs} erkennt den Fehler \fatsf{ohne den Code auszuführen}
+\end{infoBox}
+\begin{infoBox}[title=Bug Finding (Fehlersuche durch Heuristiken \& Mustererkennung)]
+    \fatsf{Wie funktioniert es?}
+    \begin{itemize}
+        \item Nutzt \fatsf{Pattern Matching \& Heuristiken} zur Erkennung typischer Bugs
+        \item Sehr schnell, verarbeitet große Java-Codebasen effizient
+        \item \fatsf{Über- und unter-approximiert} $\rightarrow$ kann Fehler übersehen oder zu viele Warnungen liefern
+    \end{itemize}
+    \fatsf{Java: SonarLint}
+    \begin{itemize}
+        \item \fatsf{Vortiel:} Findet typischer Fehler schnell
+        \item \fatsf{Nachteil:} Kann wichtige Fehler übersehen (false negatives)
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Automated Static Program Checking}
+\begin{infoBox}[title=Kontrollflussanalyse (Control Flow Analysis\, CF)]
+    \fatsf{Ziel:} Bestimmt, wie sich der Kontrollfluss im Program verhält
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=1\textwidth]{Verification Images/Automated Static Program Checking.jpeg}
+    \end{figure}
+\end{infoBox}
+\begin{infoBox}[title=Datenflussanalyse (Data Flow Analysis\, DF)]
+    \fatsf{Ziel:} Analysiert, ob Werte von Variablen wirklich genutzt werden
+    \begin{itemize}
+        \item \fatsf{Lebensdaueranalyse (Liveness Analysis)}
+        \begin{itemize}
+            \item \fatsf{Ist x nach der Zuweisung genutzt?}
+            \begin{itemize}
+                \item Ja, x wird in z = x + 2; verwendet
+            \end{itemize}
+            \item \fatsf{Wird x = 5; je genutzt?}
+            \begin{itemize}
+                \item \fatsf{Nein}, weil x im if/else überschrieben wird \fatsf{$\rightarrow$ toter Code} 
+            \end{itemize}
+        \end{itemize}
+        
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Informationsflussanalyse (Information Flow Analysis\, IF)]
+    \fatsf{Abhägigkeiten von z}
+    \begin{itemize}
+        \item z = x + 2;
+        \item x hängt von if(y>0) ab $\rightarrow$ \fatsf{z ist abhängig von y}
+    \end{itemize}
+    \fatsf{Fazit:}
+    \begin{itemize}
+        \item Der Wert von z hängt direkt von y ab
+        \item Falls y > 0, stammt x aus x = 1
+        \item Falls y <= 0, stammt x aus x = 2
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Pfadabhängigkeit (Path Analysis\, PA)]
+    \fatsf{Ziel:} Bestimmt, welche Anfangswerte die Kontrollflüsse beeinflussen
+    \begin{itemize}
+        \item \fatsf{Welche Werte von y bestimmen den Pfad?}
+        \begin{itemize}
+            \item Falls y > 0 $\rightarrow$ linker Pfad (x = 1)
+            \item Falls y <= 0 $\rightarrow$ rechter Pfad (x = 2)
+        \end{itemize}
+        \item \fatsf{Ergebnis:}\\
+        y entscheidet, ob z = 3 (wenn y > 0) oder z = 4 (wenn y <= 0) ist
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Bug Finding: SPOTBUGS}
+\begin{defBox}[title=SPOTBUGS (spotbugs.github.io\, successor of FindBugs)]
+    \begin{itemize}
+        \item Bug detection in JAVA
+        \item Finds \red{bug patterns} (idiom for error-prone code)
+        \item Works at byte code level
+    \end{itemize}
+\end{defBox}
+\begin{defBox}[title=Sources for Bug Patterns]
+    \begin{itemize}
+        \item Complex language features
+        \item Misunderstood API methods or invariants
+        \item Typos, wrong usage of operators
+    \end{itemize}
+\end{defBox}
+\begin{defBox}
+    False warnings: in practice < 50\% (good enough?)
+\end{defBox}
+\subsubsection*{SPOTBUGS: Some Bug Patterns}
+\begin{infoBox}[title=Nutzloser Kontrollfluss zur nächsten Zeile (Useless Control Flow to next Line)]
+    \begin{itemize}
+        \item \fatsf{Problem:}
+        \begin{itemize}
+            \item Ein \fatsf{überflüssiges if-Statement} ohne Wirkung
+            \item Der Code läuft \fatsf{unabhängig von der Bedingung} gleich weiter
+        \end{itemize}
+        \item \fatsf{Fehlerhafter Code:}
+        \begin{codeBlock}{}
+            if (args.length == 0);
+                return;
+        \end{codeBlock}
+        \item \fatsf{SpotBugs-Warnung:}
+        \begin{codeBlock}{}
+            Useless control flow: control flow continues to same location regardless of branch taken
+        \end{codeBlock}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Sinnloser Vergleich mit NaN (Doomed Test for Equality to NaN)]
+    \begin{itemize}
+        \item \fatsf{Problem:}
+        \begin{itemize}
+            \item Vergleich von double oder float mit NaN mittels == schlägt immer fehl
+            \item NaN ist niemals gleich sich selbst (NaN == NaN) ist false
+        \end{itemize}
+        \item \fatsf{Fehlerhafter Code:}
+        \begin{codeBlock}{}
+            double x = Double.NaN;
+            if (x == Double.NaN){ // Immer false!
+                System.out.println("x ist NaN");
+            }
+        \end{codeBlock}
+        \item \fatsf{SpotBugs-Warnung:}
+        \begin{codeBlock}{}
+            Doomed test for equality to NaN: 'x == Double.NaN' will always evaluate to false
+        \end{codeBlock}
+        \item \fatsf{Lösung:}
+        \begin{codeBlock}{}
+            if (Double.isNaN(x)){ // Korrekte Methode zur NaN-Prüfung
+                System.out.println("x ist NaN");
+            }
+        \end{codeBlock}
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Formal Verification}
+\begin{infoBox}
+    \fatsf{Formale Verfikation} ist eine Methode zur mathematischen \fatsf{Beweisführung}, um sicherzustellen, dass ein Programm seine \fatsf{formale Spezifikation} erfüllt
+\end{infoBox}
+\begin{infoBox}[title=Warum formale Verifikation?]
+    \begin{itemize}
+        \item \fatsf{Mathematische Strenge:} Basiert auf \fatsf{Logik und Mengenlehre}
+        \item \fatsf{Starke Garantien:} Wenn eine Eigenschaft bewiesen wurde, \fatsf{gibt es keine Gegenbeispiele}
+        \item \fatsf{Nicht immer vollständig:} Einige wahre Eigenschaften können \fatsf{nicht bewiesen werden}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Arten der formalen Verifikation]
+    \begin{enumerate}
+        \item \fatsf{Modellprüfung (Model Checking)}
+        \begin{itemize}
+            \item \fatsf{Prinzip:} Das Programm wird als \fatsf{endliher Zustandsraum} modelliert, und ein Algorithmus prüft \fatsf{alle möglichen Zustände}
+            \item \fatsf{Beispiel-Tools:}
+            \begin{itemize}
+                \item \fatsf{CBMC} - Model Checking für C/C++
+                \item \fatsf{Java PathFinder (JPF)} - Model Checking für Java
+                \item \fatsf{Sping} - Verifikation von Parallelprogrammen
+                \item Spin
+                \item SDV/SLAM, ...
+            \end{itemize}
+            \item \fatsf{Nachteil: Zustandsexplosion} - Wenn das Programm viele Variablen hat, kann die Anzahl der möglichen Zustände extrem groß werden
+        \end{itemize}
+        \item \fatsf{Deduktive Verifikation (Deductive Verification)}
+        \begin{itemize}
+            \item \fatsf{Prinzip:} Eigenschaften des Programms werden \fatsf{als mathematische Beweise} formuliert
+            \item \fatsf{Beispiel-Tools:}
+            \begin{itemize}
+                \item \fatsf{KeY} - Beweist Korrektheit von Java-Programmen
+                \item \fatsf{KIV} - Beweist funktionale Korrektheit von Algorithmen
+                \item \fatsf{VeriFast} - Verifikation von Multi-Threading-Programmen
+                \item VeriFast, jStar, VerCors, Viper, ...
+            \end{itemize}
+            \item \fatsf{Vorteil:} Funktioniert auch für \fatsf{unendliche Zustandsräume}
+            \item \fatsf{Nachteil:} Erfordert oft \fatsf{manuelle Annotationen} im Code, um den Beweis zu führen
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Formal Verification: Architecture}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Formal Verification: Architecture.jpeg}
+\end{figure}
+\begin{infoBox}[title=Prozess der Verifikation]
+    \begin{enumerate}
+        \item \fatsf{Formale Spezifikation:}
+        \begin{itemize}
+            \item Definiert, \fatsf{was} ein Programm tun soll (z.B. \fatsf{Vorbedingungen, Nachbedingungen})
+            \item \fatsf{Program Verification System:}
+            \begin{itemize}
+                \item Nutzt \fatsf{Beweisregeln,} um zu zeigen: \enquote{Die Implementierung erfüllt die Spezifikation}
+            \end{itemize}
+            \item \fatsf{Automatische Beweisführung:}
+            \begin{itemize}
+                \item Computerunterstützt (z.B. mit \fatsf{KeY} für Java)
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Model Checking: SDV/SLAM - Static Driver Verification}
+\begin{infoBox}
+    \fatsf{SDV (Static Driver Verifier) / SLAM} ist ein \fatsf{formales Verifikations-Tool} zur \fatsf{Fehlersuche in Windows-Gerätetreibern} (C-Programme)
+\end{infoBox}
+\begin{infoBox}[title=Funktionsweise von SDV/SLAM]
+    \begin{itemize}
+        \item Findet alle Fehler mit Bezug auf API-Nutzungsregeln
+        \item Analysiert alle möglichen Codepfade durch Model Checking
+        \item Definiert temporale Sicherheitsregeln für API-Nutzung
+        \item Verwendet CEGAR (Conterexample-Guided Abstraction Refinement)
+        \item Nutzt symbolische Ausführung \& Model Checking 
+        \item Sehr geringe False-Positive-Rate (4\%)
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Specifications as Contracts}
+\begin{infoBox}[title=Spezifikationen als Verträge (\enquote{Design by Contract})]
+    \begin{itemize}
+        \item \fatsf{Grundidee:} Methoden in der objektorientierten Programmierung werden durch \fatsf{Verträge} beschrieben
+        \item \fatsf{Vertrag = Spezifikation, die Bedingungen für Korrektheit definiert}
+        \item \fatsf{Zwei Parteien:}
+        \begin{itemize}
+            \item \fatsf{Caller (Aufrufer)} $\rightarrow$ Muss \fatsf{Vorbedingungen} erfüllen
+            \item \fatsf{Callee (Methode/Implementierung)} $\rightarrow$ Garantiert \fatsf{Nachbedingungen,} falls Vorbedingungen erfüllt sind
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=\enquote{Design by Contract} (Meyer\, 1992\, Eiffel)]
+    \begin{itemize}
+        \item Methode garantiert ein bestimmtes Verhalten $\rightarrow$ Nur wenn der Caller die Voraussetzungen erfüllt!
+        \item Verhindert unklare Verantwortlichkeiten zwischen Entwicklern
+    \end{itemize}
+    \fatsf{Drei Bestandteile eines Vertrags:}
+    \begin{itemize}
+        \item \fatsf{Precondition (Vorbedingung):} Bedingungen, die erfüllt sein müssen, bevor die Methode aufgerufen wird
+        \item \fatsf{Postcondition (Nachbedingung):} Bedingungen, die nach der Methode garantiert erfüllt sind
+        \item \fatsf{Invariant:} Bedingungen, die für eine Klasse jederzeit gültig sind
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Beispiel mit JML (Java Modeling Language)]
+    \begin{itemize}
+        \item Vertrag für eine withdraw-Methode in einer BankAccount-Klasse:
+        \begin{codeBlock}{}
+            public class BankAccount {
+                private int balance;
+                
+                /*@ requires amount > 0 && amount <= balance;
+                  @ ensures balance == \old(balance) - amount;
+                  @*/
+                public void withdraw(int amount) {
+                    balance -= amount;
+                }
+            }
+        \end{codeBlock}
+        \item \fatsf{Erklärung:}
+        \begin{itemize}
+            \item requires amount > 0 \&\& amount <= balance;\\
+            $\rightarrow$ \fatsf{Vorbedingung:} Betrag muss positiv und nicht größer als das Guthaben sein
+            \item ensures balance == \textbackslash old(balance) - amount;\\
+            $\rightarrow$ \fatsf{Nachbedingung:} Nach dem Aufruf ist das Guthaben um amount reduziert
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Java Modelling Language (JML)}
+JML is a \blue{contract-based} \red{specification language} tailored to \red{Java}, a \red{behavioral interface sspecification language} (BISL)
+\begin{defBox}[title=General JML Philosophy]
+    Integrate
+    \begin{itemize}
+        \item JML specification and
+        \item Java implementation
+    \end{itemize}
+    within \red{a single language} (\enquote{single-tier approach})
+\end{defBox}
+$\Rightarrow$ JML is not external to Java, but an \red{extension} of Java
+\begin{defBox}
+    JML \red{is} Java + \red{First-Order Logic} + \red{Contracts} + \red{Invariants} + more...
+\end{defBox}
+\subsubsection*{Specifying Binary Search in JML}
+\begin{codeBlock}{}
+    private int[]a;
+    /*@ private normal_behavior
+        requires 0 <= low <= up <= a.length;
+        requires (\forall int x, y; 0 <= x < y < a.length; a[x] <= a[y]);
+        ensures \result == -1 || low <= \result < up;
+        ensures (\exists int idx; low <= idx < up; a[idx] == v) ? \result >= low && a[\result] == v : \result == -1;
+        assignable \nothing;
+        measured_by up - low;
+    @*/
+    private int binSearch (int v, int low, int up);
+\end{codeBlock}
+\begin{defBox}[title=Natural Language Specification]
+    If the caller guarantees that
+    \begin{enumerate}[label=\roman*)]
+        \item low is less-or-equal than up, both are in the bounds of a (including a.length)
+        \item a is not null (Default in JML Implicit precondition \fatsf{requires a != null})
+        \item a is sorted
+    \end{enumerate}
+    then the method guarantees that
+    \begin{enumerate}[label=\roman*)]
+        \item the result is -1 or in [low, up)
+        \item if v is in a then an index of v in a is returned, else -1 is returned
+        \item it terminates w/o an exception
+        \item the heap is not modified
+        \item up - low is a termination witness
+    \end{enumerate}
+\end{defBox}
+\subsubsection*{Working Principle of Deductive Verification}
+\begin{infoBox}
+    Deduktive Verifikation nutzt \fatsf{mathematische Beweise} zur Sicherstellung der Korrektheit eines Programms anhand seiner \fatsf{formalen Spezifikation}
+\end{infoBox}
+\begin{infoBox}[title=Path Exploration (Wege-Exploration)]
+    \fatsf{Symbolische Ausführung} wird verwendet, um alle möglichen Pfade im \fatsf{Kontrollflussgraphen (CFG)} eines \fatsf{linearen Programms} (ohne Sprünge, Schleifen oder Methodenaufrufe) zu untersuchen
+    \begin{itemize}
+        \item \fatsf{Symbolische Werte:} Statt konkrete Eingaben zu testen, werden \fatsf{Variablen als Symbole} behandelt
+        \item \fatsf{Endliche Anzahl von Pfaden:} Bei linearem Code gibt es \fatsf{nur eine begrenzte Anzahl von Ausfürhungspfaden}
+    \end{itemize}
+    Beispiel:
+    \begin{codeBlock}{}
+        int foo(int x) {
+            if (x > 0) return x + 1;
+            else return x - 1;
+        }
+    \end{codeBlock}
+    \fatsf{Mögliche Pfade:}
+    \begin{enumerate}
+        \item \fatsf{x > 0} $\rightarrow$ return x + 1
+        \item \fatsf{x <= 0} $\rightarrow$ return x - 1
+    \end{enumerate}
+    Durch symbolische Werte (x = $\alpha$, x = $\beta$) kann die Methode \fatsf{für alle Eingaben} formal verifiziert werden
+\end{infoBox}
+\begin{infoBox}[title=Umgang mit Schleifen - Loop Invariants]
+    \begin{itemize}
+        \item \fatsf{Problem:} Schleifen erzeugen unendlich viele mögliche Pfade
+        \item \fatsf{Lösung: Schleifeninvarianten} approximieren die Wirkung einer Schleife statt sie unendlich auszuführen
+    \end{itemize}
+    \fatsf{Beispiel für eine Schleifeninvariante}
+    \begin{codeBlock}{}
+        int sum(int n) {
+        int s = 0;
+        int i = 1;
+        while (i <= n) {
+            s = s + i;
+            i++;
+        }
+        return s;
+    }
+    \end{codeBlock}
+\end{infoBox}
+\fatsf{Schleifeninvariante:}
+\enquote{Am Anfang jeder Iteration gilt: s ist die Summe der Zahlen 1 bis i-1}
+\begin{itemize}
+    \item Diese Regel bleibt für \fatsf{alle} iterationen gültig
+    \item Das Verifikationssystem muss nur \fatsf{die Invariante beweisen}, nicht jede Iteration einzeln
+\end{itemize}
+\begin{infoBox}[title=Schlüssel zur Skalierbarkeit: Methodenverträge statt vollständiger Ausführung]
+    \begin{itemize}
+        \item Anstatt Methodenaufrufe vollständig zu symbolisch auszuführen, werden sie \fatsf{durch ihre Verträge ersetzt}
+        \item Dies reduziert die Anzahl der analysierten Pfade drastisch
+    \end{itemize}
+    \fatsf{Beispiel:}
+    \begin{codeBlock}{}
+        //@ requires x > 0;
+        //@ ensures \result == x + 1;
+        int increment(int x) {
+            return x + 1;
+        }
+        
+        void test(int y) {
+            int z = increment(y);
+        }
+    \end{codeBlock}
+    \fatsf{Statt increment(y) symbolisch auszuführen}, wird sein Vertrag genutzt:
+    \begin{itemize}
+        \item y > 0 garantiert als Vorbedingung
+        \item z == y + 1 ist direkt ableitbar
+    \end{itemize}
+    \fatsf{Ergebnis:} Statt alle Pfade innerhalb von increment() zu analysieren, wird der \fatsf{Vertrag direkt als Beweisregel verwendet!}
+\end{infoBox}
+\subsubsection*{Symbolic Program Execution}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Verification Images/Symbolic Program Execution.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Dynamic Verification: Runtime Monitoring of Contract Adherence}
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.5} % Adjust row height
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \fatsf{Merkmal} & \fatsf{Statische Verifikation (Deduktiv)} & \fatsf{Dynamische Verifikation (Runtime Monitoring)} \\
+        \hline
+        \fatsf{Wann erfolgt die Prüfung?} & Vor der Ausfürhung (Compile-Zeit) & Während der Programmausführung \\
+        \hline
+        \fatsf{Wie?} & Mathematischer Beweis & Laufzeit-Überprüfung mit assert \\
+        \hline
+        \fatsf{Erkennt Fehler?} & Für alle möglichen Eingaben & Nur für ausgeführte Fälle \\
+        \hline
+        \fatsf{Skalierbarkeit?} & Anspruchsvoll, aber vollständig & Einfacher, aber begrenzte Abdeckung \\
+        \hline
+    \end{tabular}
+\end{table}
+\begin{infoBox}[title=Grenzen der dynamischen Verifikation]
+    \begin{itemize}
+        \item \fatsf{Keine vollständige Abdeckung}
+        \begin{itemize}
+            \item Nur die \fatsf{ausgeführten Fälle} werden geprüft. Falls ein Codepfad nie durchlaufen wird, wird er \fatsf{nicht getestet}
+        \end{itemize}
+        \item \fatsf{Kein Beweis für alle Eingaben}
+        \begin{itemize}
+            \item Ein erfolgreicher Lauf bedeutet nicht, dass der Code für \fatsf{alle möglichen Eingaben} korrekt ist
+        \end{itemize}
+        \item \fatsf{Gut für Debugging \& Testfälle}
+        \begin{itemize}
+            \item Kann helfen, Fehler frühzeitig zu finden, insbesondere in der Entwicklung \& Testphase
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Kombination von Statischer und Dynamischer Verifikation]
+    Die Kombination von \fatsf{statischer (deduktiver) Verifikation} und \fatsf{dynamischer Verifikation (Laufzeitüberwachung)} kann helfen, \fatsf{maximale Sicherheit} bei der Programmkorrektheit zu erreichen
+    \begin{itemize}
+        \item \fatsf{Statische Verifikation} (z.B. mit KeY oder JML) beweist mathematisch, dass ein Codeabschnitt für \fatsf{alle möglichen Eingaben} korrekt ist
+        \item \fatsf{Dynamische Verifikation} (mit assert) stellt sicher, dass auch zur \fatsf{Laufzeit} keine unvorhergesehenen Fehler auftreten
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Verification: Summary}
+\begin{itemize}
+    \item \blue{Testing} is by far the most important and common \red{verification approach}
+    \item \red{Automated test case execution} is standard (and essential)
+    \item \red{Automated test generation} tools require expertise, lack robustness, but:
+    \begin{itemize}
+        \item Potentially huge cost savings
+        \item Test suites with coverage guarantees
+        \item Several industrial products availale, growing interest
+    \end{itemize}
+    \item \red{Code reviews} often under-appreciated, but effective
+    \item Fully automatic verification tools include \red{bug finders}, \red{static checkers}
+    \begin{itemize}
+        \item Main problem: high number of \red{false positives}
+    \end{itemize}
+    \item \red{Formal verification} is mainly done
+    \begin{itemize}
+        \item in \red{specific} application scenarios (domain-specific, hard-coded rules)
+        \item in \red{safety-critical} systems (effort to \red{supply formal specification} is justified)
+        \item for high-impact code, such as \red{libraries} (dto.)
+    \end{itemize}
+\end{itemize}

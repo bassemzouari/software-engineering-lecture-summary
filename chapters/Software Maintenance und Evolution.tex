@@ -1,0 +1,537 @@
+\section{Software Maintenance und Evolution}
+\subsection{Part I: Maintenance}
+\subsubsection*{Software Maintenance}
+\begin{defBox}
+    Like any other complex technical artifact, software is rarely ever finished but must be constantly \red{maintained}
+\end{defBox}
+\begin{defBox}
+    Software does not \red{age}, no \enquote{wear and tear} (\enquote{\blue{Abnützung}})
+\end{defBox}
+\begin{defBox}[title=However\, ...]
+    The software \red{environment} changes more rapidly and more frequently than in any other engineering disciptline
+\end{defBox}
+\subsubsection*{Triggers of Software Maintenance Action}
+\begin{enumerate}
+    \item Bug Fix
+    \item Changing Requirement
+    \item New Feature (\enquote{\blue{Merkmal}}) Request
+    \item Evolving Hardware
+    \item Evolving Software Architecture
+    \item Evolving Software Stack
+\end{enumerate}
+\begin{defBox}
+    We take a brief look at each in turn
+\end{defBox}
+\subsubsection*{Triggers of Software Maintenance Action: Bug Fix}
+\begin{itemize}
+    \item By far \red{most common} maintenance action
+\end{itemize}
+\blue{Still, need to be careful:}
+\begin{itemize}
+    \item Extensive testing essential to avoid \red{regression}
+    \item Accumulate several fixes, decide on an \red{update schedule}
+    \begin{infoBox}
+        Mehrere Fixes sammeln und einen Update-Zeitplan festlegen
+    \end{infoBox}
+    \begin{itemize}
+        \item Frequent updates \red{annoy} users
+        \item Deploying a new software version can be \red{expensive}
+        \item Provide a \red{change log}
+    \end{itemize}
+    \item Use a \red{ticketing} system to \blue{prioritize} and \blue{assign} fixes
+    \begin{itemize}
+        \item Can reconstruct who worked when on which problem
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Triggers of Software Maintenance Action: Changing Requirement}
+\begin{infoBox}[title=Änderungen während der Entwicklung und nach der Bereitstellung]
+    \begin{itemize}
+        \item \fatsf{Während der Entwicklung:}
+        \begin{itemize}
+            \item Änderungen können das \enquote{Todesurteil} für viele Projekte sein, wenn sie unkontrolliert oder spät im Prozess auftreten
+        \end{itemize}
+        \item \fatsf{Nach der Bereitstellung (oft unvermeidlich):}
+        \begin{itemize}
+            \item \fatsf{Gesetzliche Vorgaben ändern sich} $\rightarrow$ Software muss angepasst werden
+            \item \fatsf{Neue Geschäftsprozesse oder Nutzungsarten} $\rightarrow$ Software muss flexibel bleiben
+            \item \fatsf{Nutzer-Feedback} $\rightarrow$ Kann auf unzureichende Tests oder unentdeckte Probleme hinweisen
+            \item \fatsf{Höhere Leistungsanforderungen} $\rightarrow$ Wachsende Nutzerbasis oder größere Datenmengen erfordern Skalierung
+            \item \fatsf{Cloud-Architektur} $\rightarrow$ Weniger problematisch, da Updates einfacher verteilt werden können
+        \end{itemize}
+        \item \fatsf{Wichtige Fragen bei Änderungen:}
+        \begin{itemize}
+            \item Handelt es sich wirklich um eine \fatsf{neue Anforderung} oder nur um eine kleine Anpassung?
+            \item Lohnt sich die neue Funktion geschäftlich?
+            \item Muss die vorherige Version weiter unterstützt werden?
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Triggers of Software Maintenance Action: New Feature Request}
+\begin{itemize}
+    \item The more \red{successful} a software, the more \red{likely} feature requests are\\
+    \blue{It worked great for this problem, can we also use it for that?}
+    \item Be careful with features driven by \red{innovation}\\
+    \blue{New version needs to add business value, not simply novelty}
+    \item Features triggered by new \red{customer acquisition}\\
+    \blue{New customers often have new requirements}
+\end{itemize}
+\begin{defBox}
+    Can lead to two variants of software (with/without new feature) that \red{both} must be maintained from now on
+\end{defBox}
+\begin{defBox}
+    Unchecked addition of new features can cause serious problems - \blue{Come back to this issue}
+\end{defBox}
+\subsubsection*{Triggers of Software Maintenance Action: Evolving Hardware}
+\begin{itemize}
+    \item Multiple cores enable \red{parallelization} \blue{(Move on this later)}
+    \item New \red{hardware architecture}, e.g., \blue{x86 $\rightarrow$ ARM}
+    \item \fatsf{Veränderte Peripheriegeräte beeinflussen die Software:}
+    \begin{itemize}
+        \item \red{Screens:} Resolution, screen size \& layout affects GUI
+        \item \red{Storage} technology has influence on \red{backup} requirements, e.g., \blue{RAID}
+        \item \red{Authentication} not via passphrase, but face recognition or fingerprints
+        \item New types of \red{sensors:} acceleration, humidity, etc.
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Triggers of Software Maintenance Action: Evolving Software Architecture}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Software Maintenace Images/Cloud services.jpeg}
+\end{figure}
+\begin{infoBox}
+    \begin{itemize}
+        \item \fatsf{Cloud Dienste und deren Modelle:}
+        \begin{itemize}
+            \item \fatsf{SaaS (Software as a Service):} Bereitstellung von Anwendungen über die Cloud (z.B. Google Docs, Dropbox)
+            \item \fatsf{PaaS (Platform as a Service):} Bereitstellung einer Plattform für Anwendungen (z.B. Datenbanken, Webserver)
+            \item \fatsf{IaaS (Infrastructure as a Service):} Breitstellung virtueller Maschinen, Speicher oder Server (z.B. AWS EC2, Google Cloud Compute)
+        \end{itemize}
+        \item \fatsf{Vorteile von Cloud-Diensten:}
+        \begin{itemize}
+            \item \fatsf{Kostenersparnis} durch weniger eigener Hardware
+            \item \fatsf{Mobilität \& Skalierbarkeit} - Dienste können flexibel genutzt und erweitert werden
+        \end{itemize}
+        \item \fatsf{Hearusforderungen:}
+        \begin{itemize}
+            \item \fatsf{Datenschutz} - Wer hat Zugriff auf die Daten?
+            \item \fatsf{Schnittstellen} - Wie fein granular sind APIs?
+            \item \fatsf{Latenz \& Verlässlichkeit} - Abhängigkeit von der Internetverbindung
+        \end{itemize}
+        \item \fatsf{Virtualisierung als Schlüsseltechnologie:}
+        \begin{itemize}
+            \item Ermöglicht Plattformunabhängigkeit und Nutzung von Cloud-Diensten
+            \item \fatsf{Herausforderungen:}
+            \begin{itemize}
+                \item Leistungsaufwand (Performance-Overhead)
+                \item Nicht alles lässt sich virtualisieren
+                \item Hohe Anfangskosten für die Umstellung
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Triggers of Software Maintenance Action: Evolving Software Stack}
+\begin{infoBox}
+    Die Software-Wartung muss sich an Veränderunen im Technologie-Stack anpassen, insbesondere an \fatsf{externe Bibliotheken, Programmiersprachen und Datenbanktechnologien}
+\end{infoBox}
+\begin{infoBox}[title=Externe Softwarebibliotheken]
+    Bibliotheken sind essentiell für die Softwareentwicklung, aber sie bringen Herausforderungen mit sich:
+    \begin{itemize}
+        \item \fatsf{Eigene Bibliotheken vs. externe Bibliotheken:}
+        \begin{itemize}
+            \item \fatsf{Eigene Bibliotheken schreiben:} Mehr Kontrolle, aber hoher Entwicklungs- und Wartungsaufwand
+            \item \fatsf{Externe Bibliotheken nutzen:} Spart Zeit, bringt aber Abhängigkeiten mit sich
+        \end{itemize}
+        \item \fatsf{Herausforderungen externer Bibliotheken:}
+        \begin{itemize}
+            \item + Erweitern die Funktionalität, ohne sie selbst entwickeln zu müssen
+            \item - Müssen gepflegt und aktualisiert werden, sonst entstehen \fatsf{technische Schulden}
+            \item - Ohne gute Dokumentation sind sie schwer nutzbar und wartbar
+            \item - Sicherheitslücken in Bibliotheken erhöhren die \fatsf{Angriffsfläche für Hacker}
+        \end{itemize}
+        \item \fatsf{Herausforderungen eigener Bibliotheken:}
+        \begin{itemize}
+            \item + Verhindern Abhängigkeit von externen Anbietern
+            \item - Können Mobilität und Virtualisierung einschränken
+            \item - Können Mobilität und Virtualisierung einschränken
+            \item + Erfordern Fachwissen, das möglicherweise nicht zur Kernkompetenz gehört
+            \item \fatsf{Eigene Entwicklung ist sinnvoll, wenn:}
+            \begin{itemize}
+                \item Die Bibliothek \fatsf{zentrale Produktwerte} enthält
+                \item Eine \fatsf{externe Lösung zu starke Abhängigkeiten} von einem Anbieter schafft
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Programmiersprachen \& deren APIs]
+    \begin{itemize}
+        \item \fatsf{Meist abwärtskompatibel}, aber ähltere Versionen werden irgendwann nicht mehr unterstützt
+        \item Neue Sprachversionen erfordern Anpassungen, um mit neuen Features oder Änderungen Schritt zu halten
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Datenbanktechnologie]
+    \begin{itemize}
+        \item Wechsel von \fatsf{externen} zu \fatsf{In-Memory-Datenbanken} für mehr Leistung
+        \item \fatsf{Business-Logik direkt in die Datenbank verlagern} kann Performance steigern (z.B. SAP HANA kombiniert beides)
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Case Study - Evolving Hardware: Parallelization as a Maintenance Task}
+\begin{infoBox}
+    Moderne Hardware setzt zunehmend auf \fatsf{Mehrkern- und Multiprozessorsysteme}, was die Notwendigkeit der \fatsf{Parallelisierung} bestehender Software mit sich bringt
+\end{infoBox}
+\begin{infoBox}[title=Beobachtung]
+    \begin{itemize}
+        \item In den letzten Jahren haben \fatsf{Mehrkernprozessoren} die Standardarchitektur dominiert
+        \item \fatsf{Alte Software wurde meist sequenziell entwickelt}, nutzt also die zusätzliche Rechenleistung nicht optimal
+        \item \fatsf{Mögliche Leistungssteigerung} durch Parallelisierung, aber nicht ohne Herausforderungen
+    \end{itemize}
+    \fatsf{Folge}
+    \begin{itemize}
+        \item \fatsf{Parallelisierung wird zu einer wichtigen Wartungsaufgabe}
+        \item Kann als \fatsf{komplexes Refactoring} betrachtet werden (siehe Vorlesung 7 \enquote{Design Techniques})
+        \item Erfordert tiefgehendes Wissen über:
+        \begin{itemize}
+            \item Die \fatsf{Problemstellung}
+            \item \fatsf{Nebenläufige Algorithmen und Datenstrukturen}
+            \item \fatsf{Hardware-Architektur}, um Parallelisierungsstrategien effizient umzusetzen\\
+            \fatsf{Lösung: Einsatz von \fatsf{Design Patterns}} zur Strukturierung von Parallelisierungsansätzen
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Pipeline Parallelisierung als Beispiel]
+    \fatsf{Problemstellung (Requirements)}
+    \begin{itemize}
+        \item Die zu lösende Aufgabe kann in \fatsf{unabhängige, aufeinanderfolgende Stufen (Tasks)} unterteilt werden
+        \item Jede Stufe bearbeitet \fatsf{einen Datenblock}, bevor sie ihn weitergibt
+        \item Der \fatsf{Datenfluss bestimmt die Reihenfolge} der Verarbeitung
+    \end{itemize}
+    \fatsf{Beispiel für eine Pipeline:}
+    \begin{itemize}
+        \item \fatsf{Bildverarbeitung:}
+        \begin{itemize}
+            \item \fatsf{Objektlokalisierung} (Position und Größe eines Objekts bestimmen)
+            \item \fatsf{Merkmalextraktion} (Form, Farbe etc. analysieren)
+            \item \fatsf{Objektklassifikation} (\enquote{Das Objekt ist eine Schraube})
+        \end{itemize}
+        \item \fatsf{Unix-Pipeline (Kommandozeile):}
+        \begin{codeBlock}{}
+            cat students.dat | awk '{print \$2}' | sort -rs | head -n 1
+        \end{codeBlock}
+        \begin{itemize}
+            \item \fatsf{Datenquelle (cat) $\rightarrow$ Verarbeitung (awk) $\rightarrow$ Sortierung (sort) $\rightarrow$ Ergebnis filtern (head)}
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Herausforderungen (Forces \& Context)]
+    \begin{itemize}
+        \item \fatsf{Die Reihenfolge der Berechnungen muss stabil bleiben} (nicht umkehrbar)
+        \item \fatsf{Einzelne Stufen müssen spezielle Hardware-Ressourcen zugewiesen werden können} (z.B. GPUs oder NPUs)
+        \item \fatsf{Ermöglicht Anpassungen} (z.B. Hinzufügen neuer Stufen), aber \fatsf{keine Fehlerkorrektur} für fehlerhafte Eingabedaten
+        \item \fatsf{Begrenzte Parallelisierung} $\rightarrow$ Die Anzahl der Stufen begrenzt die Effizienz\\
+        \fatsf{Massive Parallelisierung ist nicht möglich}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Lösung: Stufenbasierte Verarbeitung]
+    \begin{itemize}
+        \item Zerlege die Berechnung in mehreren \fatsf{Stufen}, die auf \fatsf{unabhängigen Datenblöcken} arbeiten
+        \item Jede Stufe durchläuft drei Phasen:
+        \begin{enumerate}
+            \item \fatsf{Eingangsdaten empfangen} (beenden, wenn alle Daten verarbeitet sind)
+            \item \fatsf{Daten verarbeiten}
+            \item \fatsf{Ergebnis an die nächste Stufe weitergehen und mit dem nächsten Block beginnen}
+            \begin{itemize}
+                \item \fatsf{Verhlaten der Pipeline (dynamische Illustration:)}
+                \begin{itemize}
+                    \item Jede Stufe braucht gleich viel Zeit
+                    \item \fatsf{Sobald die Pipeline gefüllt ist, wird pro Schritt ein Ergebnis erzeugt}
+                    \item \fatsf{Ohne Parallelisierung} dauert die Berechnung 3 Schritte pro Ergebnis
+                \end{itemize}
+            \end{itemize}
+        \end{enumerate}
+    \end{itemize}
+    \fatsf{Parallelisierte Verarbeitung (optimiert für spezialisierte Hardware)}
+    \begin{itemize}
+        \item \fatsf{Stufen können auf spezialisierte Hardware ausgelagert werden} (z.B. GPUs oder NPUs)
+        \item \fatsf{Effizienzsteigerung durch kontinuierlichen Datenfluss}
+    \end{itemize}
+\end{infoBox}
+\subsection{Part II: Evolution}
+\subsubsection*{Software Evolution}
+\begin{infoBox}
+    Software-Entwicklung endet nicht mit der ersten Veröffentlichung - im Gegenteil: \fatsf{Die meisten Kosten entstehen in der Wartungsphase}. Änderungen, neue Versionen und Anpassungen führen zu einer fortlaufenden Evolution der Software
+\end{infoBox}
+\begin{infoBox}[title=Definition: Software-Evolution]
+    \fatsf{Software-Evolution} bezeichnet die \fatsf{Reihe von Änderungen, neue Versionen und Anpassungen}, die während der gesamten Wartungsphase stattfinden - von der ersten Veröffentlichung bis zur endgültigen Stillegung\\
+    \fatsf{Wichtige Erkenntnisse:}
+    \begin{itemize}
+        \item Über \fatsf{90\% der Lebenszykluskosten} einer Software entfallen auf die Wartung
+        \item Erfolgreiche Software \fatsf{wird zwangsläufig gewartet} - ein unvermeidlicher Prozess
+    \end{itemize}
+    \fatsf{Zitat von Fred Brooks:} \enquote{Jede erfolgreiche Software wird zwangsläufig gewartet}
+\end{infoBox}
+\begin{infoBox}[title=Kritische Herausforderungen der Software Evolution]
+    \begin{enumerate}
+        \item \fatsf{Gefahr: Verschlechterung durch Änderungen (\enquote{Verschlimmbesserung})}
+        \begin{itemize}
+            \item Neue Änderungen könnten bestehende Funktionen unerwartet zerstören
+            \item \fatsf{Abhilfe:}
+            \begin{itemize}
+                \item \fatsf{Gründliche Regressionstests} sind Pflicht
+                \item \fatsf{Mehr Zeit für Tests als für Bugfixing einplanen}
+                \item \fatsf{Beta-Versionen oder Early Access veröffentlichen}, um Feedback von erfahrenen Nutzern zu erhalten
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Inkonsistenzen zwischen Spezifikation, Dokumentation und Implementierung}
+        \begin{itemize}
+            \item \fatsf{Typisches Problem:} Änderungen im Code sind nicht dokumentiert - besonders schwierig, wenn sie von Entwicklern vorgenommen wurden, die nicht mehr im Team sind
+            \item \fatsf{Abhilfe:}
+            \begin{itemize}
+                \item Jede Änderung sollte einen vollständigen Entwicklungszyklus durchlaufen
+                \item Anforderungen, Spezifikationen und Use-Case-Analysen aktualisieren
+                \item \fatsf{Agile Software-Entwicklungsmethoden} setzen auf kontinuierliche Wartung und Verbesserung (siehe nächste Vorlesung)
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Software-Variabilität \& Versionsmanagement]
+    \begin{enumerate}
+        \item \fatsf{Wann braucht es eine neue Produktvariante?}
+        \begin{itemize}
+            \item Zu viele Änderungen an einer Software können eine \fatsf{neue Variante} notwendig machen
+            \item \fatsf{Probleme bei übermäßigen Änderungen:}
+            \begin{itemize}
+                \item \fatsf{Änderungen im Datenformat} $\rightarrow$ können bestehende Daten inkompatibel machen
+                \item \fatsf{Änderungen an der Benutzeroberfläche} $\rightarrow$ können bestehende Workflows stören
+                \item \fatsf{Verlust der Abwärtskompatibilität} $\rightarrow$ alte und neue Version müssen parallel gepflegt werden
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Herausforderung: Fork-Management \& Produktlinien-Engineering}
+        \begin{itemize}
+            \item \fatsf{Entwicklungs-Forks} (Abspaltungen) müssen gemanagt werden, wenn mehrere Varianten parallel existieren
+            \item \fatsf{Software Product Line Engineering (SPLE)} geht davon aus, dass verschiedene Produktvarianten langfristig gewartet werden müssen
+            \item \fatsf{Lösung: Engineering von Software-Variablität} $\rightarrow$ Strukturierte Methoden zur Verwaltung und Wartung von Varianten
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsection{Part III: Software Variability Engineering}
+\begin{infoBox}
+    In der Softwareentwicklung bedeutet \fatsf{Variabilität}, dass eine Vielzahl von \fatsf{engen Produktvarianten} mit unterschiedlichen Anforderungen und Features gepflegt werden muss. Diese Notwendigkeit zur Variabilität ist kein neues Konzept und existiert schon in vielen Bereichen außerhalb der Software
+\end{infoBox}
+\begin{infoBox}[title=Produktvariabilität vor der Software-Ära]
+    \begin{itemize}
+        \item Variabilität gibt es nicht erst in der Softwareentwicklung. Beispiele aus anderen Branchen sind:
+        \begin{itemize}
+            \item \fatsf{Haushaltsgeräte} (verschiedene Modelle mit unterschiedlichen Funktionen)
+            \item \fatsf{Fahrzeuge} (Cabriolet vs. Kombi)
+            \item \fatsf{Kameras und HiFi-Geräte} (verschiedene Modelle mit unterschiedlichen Features)
+        \end{itemize}
+        \item \fatsf{Produktdiversifikation} ist oft ein \fatsf{Marketinguistrument}, um verschiedene Zielgruppen anzusprechen
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Herausforderungen bei der Software-Variablität]
+    \fatsf{Allgemeine Hearusforderungen der Produktvariabilität}
+    \begin{itemize}
+        \item Bei Software-Produkten kann die Anzahl der Varianten \fatsf{sehr groß werden} (bis zu Millionen von Varianten)
+        \item \fatsf{Nicht alle Varianten} werden realisiert oder sind realisierbar
+        \item \fatsf{Anforderungen können sich widersprechen} (z.B. bei einem Fahrzeugmodell: Cabriolet vs. Kombi)
+    \end{itemize}
+    \fatsf{Hearusforderungen, die durch Software verstärkt werden}
+    \begin{itemize}
+        \item \fatsf{Komplexität:}
+        \begin{itemize}
+            \item \fatsf{Anforderungen, Dokumentation und Implementierung müssen für jede Variante synchronisiert werden} - die Software-Variabilität ist dadurch komplexer als bei physischen Produkten
+            \item \fatsf{Fehlerbehebung:} Fehler müssen schnell für \fatsf{alle betroffenen Varianten} propagiert werden
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Beispiele für Software-Produktlinien]
+    Software-Produktlineien sind besonders in großen, komplexen Systemen üblich:
+    \begin{itemize}
+        \item \fatsf{Betriebssysteme:}
+        \begin{itemize}
+            \item \fatsf{Linux:} Verschiedene Varianten je nach Hardware-Architektur, Fenstermanager und Peripheriegeräten
+            \item \fatsf{Windows:} Varianten wie Home, Pro, Server, ARM, usw.
+        \end{itemize}
+        \item \fatsf{Cyber-physikalische Systeme:} Besonders in IoT und Industrie 4.0, wo Software in physische Produkte integriert wird, entsteht eine Produktlinie
+        \item \fatsf{Gerätetreiber:} Verschiedene Versionen je nach Hardware
+        \item \fatsf{Büro-Automatisierung und Verwaltungsprozesse:}
+        \begin{itemize}
+            \item Software für Steuererklärungen, Formulare, Zölle, Steuern
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Was ist eine Software-Produktlinie?]
+    Eine \fatsf{Software-Produktlinie} (oder Produktfamilie) ist eine Sammlung von Softwaresystemen, die \fatsf{gemeinsame Ressourcen teilen} und \fatsf{eine gemeinsame Produktionsweise} nutzen\\
+    \fatsf{Typische Gemeinsamkeit in einer Produktlinie:}
+    \begin{itemize}
+        \item \fatsf{Codebasis für die Kernfunktionalität}
+        \item \fatsf{Architektur}
+        \item \fatsf{Verwendete Programmiersprachen}
+    \end{itemize}
+    \fatsf{Wichtige Konzepte für die Verwaltung von Variabilität:}
+    \begin{itemize}
+        \item \fatsf{Erkennbares Fundament zur Identifikation von Gemeinsamkeiten und Variabilität} - der \fatsf{Feature-Ansatz} ist hier besonders sinnvoll (d.h. Funktionalitäten oder Merkmale, die unterschiedliche Varianten definieren)
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Terminologie von Software Product Line Engineering (SPLE)]
+    \begin{itemize}
+        \item \fatsf{Software-Feature:}\\ Ein Software-Feature ist ein \fatsf{unterscheidendes Merkmal} einer Software (z.B. Leistung, Portabilität oder Funktionalität)\\
+        Beispiel: Ein Feature könnte \enquote{Benutzeranmeldung} oder \enquote{Datenbankintegration} sein.
+        \item \fatsf{Produkt:}\\ Ein Produkt ist eine Kombination von \fatsf{Feature-Auswahlen und Parameterinstantiierungen}, die aus einer \fatsf{Software-Produktlinie} ausführbaren Code erzeugen\\
+        Beispiel: Ein Produkt könnte die Auswahl von Funktionen wie \enquote{Benutzeroberfläche}, \enquote{E-Mail-Funktion} und \enquote{Datenbankverbindung} umfassen
+        \item \fatsf{Variante:}\\ Eine Variante ist der \fatsf{ausführbare Code}, der ein Produkt aus einer Software-Produktlinie umsetzt. Jede Variante stellt ein spezifisches Softwareprodukt dar, das eine Kombination von Features implementiert\\
+        Beispiel: Ein bestimmtes Betriebssystem (z.B. Windows Pro) ist eine Variante eines Windows-Produkts
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Ziel von Software Product Line Engineering]
+    Das Ziel von \fatsf{SPLE} ist es, \fatsf{die Wartung jeder Variante} eines Produkts zu vermeiden, indem diese als Teil einer gemeinsamen Produktlinie entwickelt und gepflegt werden
+    \begin{itemize}
+        \item \fatsf{Produktlinie} und \fatsf{Produktfamilie} sind \fatsf{synonym} und beziehen sich auf eine Sammlung verwandter Produkte\\
+        Beispiel: Windows 10 Home, Pro und Server können als Varianten einer Produktlinie betrachtet werden
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Prinzipien von SPLE]
+    \begin{enumerate}
+        \item \fatsf{Trennung des Feature-Designs von der Software-Entwicklung:}
+        \begin{itemize}
+            \item Das Design des \fatsf{Feautre-Space} (also der Merkmale und Auswahlmöglichkeiten) ist eine \fatsf{separate Aktivität} und wird vor der eigentlichen Software-Entwicklung durchgeführt, in der Regel im \fatsf{Analyse-Phase}
+            \item Dies stellt sicher, dass die notwendigen Features definiert sind, bevor mit der eigentlichen Implementierung der Software begonnen wird\\
+            Beispiel: Zunächst wird festgelegt, welche Funktionen (z.B. Datenbankunterstützung, Benutzeroberfläche, etc.) das System bieten soll, bevor mit dem Programmieren begonnen wird
+        \end{itemize}
+        \item \fatsf{Vermeidung der mehrfachen Implementierung des gleichen Features:}
+        \begin{itemize}
+            \item Jedes Feature sollte \fatsf{nicht mehr als einmal} implementiert werden, um \fatsf{Redundanzen} zu vermeiden und den Wartungsaufwand zu minimieren
+            \item Dies hilft dabei, Inkonsistenzen zu verhindern und die Codebasis schlank und wartbar zu halten\\
+            Beispiel: Ein Feature wie \enquote{Datenverschlüsselung} sollte in der gesamten Produktlinie einheitlich und an einer einzigen Stelle implementiert werden
+        \end{itemize}
+        \item \fatsf{Lokalisierung von Code für ein gegebenes Feature:}
+        \begin{itemize}
+            \item Es muss \fatsf{möglich sein, den Code, der ein Feature implementiert, zu lokalisieren}, um es in verschiedenen Varianten effizient zu pflegen und zu erweitern
+            \item Die Trennung von Code, der spezifische Feature implementiert hilft, den Code zu isolieren und Änderungen gezielt vorzunehmen\\
+            Beispiel: Der Code zur \enquote{Benutzerauthentifizierung} sollte klar von anderen Codebereichen getrennt sein, sodass er in verschiedenen Varianten leicht aktualisiert werden kann
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\clearpage
+\subsubsection*{Schema of Software Product Line Engineering}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Software Maintenace Images/Schema of Software Product Line Engineering.jpeg}
+\end{figure}
+\subsubsection*{Feature Diagrams}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Software Maintenace Images/Feature Diagrams.jpeg}
+\end{figure}
+\begin{itemize}
+    \item Top is \red{root feature}
+    \item \blue{Sub-feature} only present if parent present
+    \item \red{One or more} sub-features selectable
+\end{itemize}
+\red{//TODO}
+\subsubsection*{Implementierung von Software Product Line Engineering (SPLE) auf Code-Ebene}
+\begin{infoBox}
+    SPLE kann auf verschiedene Weisen auf Code-Ebene realisiert werden. Dabei gibt es unterschiedliche Ansätze, von einfachen Makros bis hin zu fortgeschrittenen Programmiertechniken
+\end{infoBox}
+\begin{infoBox}[title=Methoden zur SPLE-Implementierung]
+    \begin{enumerate}
+        \item \fatsf{Bedingte Aktivierung von Code (Conditional Compilation)}
+        \begin{itemize}
+            \item \fatsf{Verwendung von Präprozessor-Direktiven wie \#ifdef, \#elif (Makros)}
+            \item Aktiviert oder deaktiviert Code-Segmente zur \fatsf{Komplierungszeit}, abhängig von der gewählten \fatsf{Feature-Konfiguration}
+            \item Weit verbreitet in \fatsf{C/C++} (z.B. Linux-Kernel)
+            \item Beispiel:
+            \begin{codeBlock}{}
+                #ifdef FEATURE_X
+                    void featureXFunction() { /* Feature X Code */ }
+                #endif
+            \end{codeBlock}
+            \item Vorteil: Keine Änderungen an der Programmiersprache nötig
+            \item Nachteil: Kann schwer zu verstehen und zu pflegen sein, besonders bei vielen \#ifdef-Konstruktionen
+        \end{itemize}
+        \item \fatsf{Fortgeschrittene SPLE-Techniken (benötigen oft Sprach-Erweiterungen)}
+        \begin{enumerate}
+            \item \fatsf{Aspect-Oriented Programming (AOP)}
+            \begin{itemize}
+                \item Trennung von Features in \fatsf{Aspekte}, die unabhängig vom Hauptcode definiert werden
+            \end{itemize}
+            \item \fatsf{Feature-Oriented Programming (FOP)}
+            \begin{itemize}
+                \item Feature-basierte Modularisierung durch explizite Feature-Module
+            \end{itemize}
+            \item \fatsf{Delta-Oriented Programming}
+            \begin{itemize}
+                \item Änderungen werden in Form von \fatsf{Deltas} definiert, die eine Basiskonfiguration modifizieren
+            \end{itemize}
+            \item \fatsf{Variability Modules}
+            \begin{itemize}
+                \item Definieren \fatsf{optionale Code-Einheiten}, die nur bei Bedarf aktiviert werden
+            \end{itemize}
+        \end{enumerate}
+        In der Praxis wird meist Conditional Compilation (\#ifdef, Makros= bevorzugt, trotz bekannter Herausforderungen!
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Herausforderungen in SPLE]
+    \begin{enumerate}
+        \item \fatsf{Probleme mit Makros \& \#ifdef-Strukturen}
+        \begin{itemize}
+            \item Code mit vielen Makros wird \fatsf{unübersichtlich}
+            \item \fatsf{Feature-Interaktionen} schwer zu erkennen
+            \item \fatsf{Inkompatible Features} können zu unerwartetem Verhalten führen\\
+            Beispiel:
+            \begin{itemize}
+                \item \fatsf{Feature A:} Anrufe an Nutzer \fatsf{A} werden zu \fatsf{B} weitergeleitet
+                \item \fatsf{Feature B:} \fatsf{B} blockiert alle eingehenden Anrufe\\
+                \fatsf{Was passiert, wenn beide Features aktiv sind?}\\
+                $\rightarrow$ Unklare Regeln $\rightarrow$ Potenziell fehlerhaftes Verhalten
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Code-Duplikation}
+        \begin{itemize}
+            \item Mehrere Features können ähnliche oder gleiche Codeblöcke benötigen
+            \item Redundanter Code ist schwer zu warten
+            \item \fatsf{Lösung:} Wiederverwendungsmechnismen wie \fatsf{Traits}, abstrakte Klasse, Design Patterns
+        \end{itemize}
+        \item \fatsf{Schwierige Analyse, Testbarkeit und Wartung}
+        \begin{itemize}
+            \item Fehler werden oft erst entdeckt, wenn eine spezifische \fatsf{Variante} kompiliert wird
+            \item \fatsf{Fehlende Typprüfung} für ganze Software-Familien
+            \item \fatsf{Lösung:} Forschung zu \fatsf{familienbasierter Verifikation} und \fatsf{SPLE-Designmustern} ohne Makros
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Verwaltung der Produktlinien-Artefakte]
+    Eine \fatsf{Produktlinien-Codebasis} muss effizient verwaltet werden, um Varianten flexibel zu generieren
+    \begin{enumerate}
+        \item \fatsf{Bedingte Kompilierung \& Makros}
+        \begin{itemize}
+            \item Einsatz von \#ifdef, \#elif, \#endif
+            \item Code modularisieren mit \fatsf{Erweiterbarkeit im Blick}
+            \item \fatsf{Objektorientierte Prinzipien nutzen:}
+            \begin{itemize}
+                \item \fatsf{Schnittstellen \& abstrakte Klassen} für wiederverwendbare Features
+                \item \fatsf{Design Patterns} wie \fatsf{Abstract Factory} zur Feature-Kombination
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Build-Automatisierung \& Konfigurationsmanagement}
+        \begin{itemize}
+            \item Werkzeuge wie \fatsf{KConfig, Make, Gradle} verwenden
+            \item \fatsf{Automatisierte Builds für verschiedene Produktvarianten}
+            \item Strukturierung des Codes in \fatsf{separate Dateien, Module \& Verzeichnisse}
+            \item \fatsf{Ziel:} Varianten definieren \& automatisiert bauen
+        \end{itemize}
+        Beispiel für eine Kernel-Feature-Definition in KConfig (Linux)
+        \begin{codeBlock}{}
+            config HID_APPLE
+                tristate "Apple HID support"
+                default m
+                depends on (USB_HID || BT_HIDP)
+                help
+                    Enable support for Apple HID devices (Keyboards, Mice)
+        \end{codeBlock}
+        \fatsf{Erklärung:}
+        \begin{itemize}
+            \item tristate: Feature kann y (ein), m (Modul) oder n (aus) sein
+            \item depends on: \fatsf{Abhängigkeiten} (z.B. USB oder Bluetooth muss aktiv sein)
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}

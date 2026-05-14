@@ -1,0 +1,454 @@
+\section{Software Development Processes}
+\subsection{Part I: Introduction}
+\subsubsection*{Warum brauchen wir einen Software-Engineering-Prozess?}
+
+    \begin{enumerate}
+        \item \fatsf{Größe der Aufgabe}
+        \begin{itemize}
+            \item Organisation eines potenziell großen Teams
+            \item Zuweisung von Verantwortlichkeiten
+            \item Definition von Kollaborationsmethoden
+        \end{itemize}
+        \item \fatsf{Komplexität der Aufgabe}
+        \begin{itemize}
+            \item Viele verschiedene Aktivitäten
+            \item Abhängigkeiten zwischen den Aufgaben (Wann wird was erledigt?)
+        \end{itemize}
+        \item \fatsf{Qualitätskontrolle}
+        \begin{itemize}
+            \item Sicherstellen, ob das System korrekt funktioniert
+            \item Erkennen und Beheben von Fehlern
+        \end{itemize}
+    \end{enumerate}
+
+\subsubsection*{Was ist der Software-Engineering-Prozess?}
+
+    Ein \fatsf{Software-Enginnering-Prozess} ist die Menge an Aktivitäten und Ergebnissen, die zur Erstellung eines Softwareprodukts führen\\
+    \fatsf{Grundlegende Prozessaktivitäten:}
+    \begin{enumerate}
+        \item \fatsf{Software-Spezifikation}
+        \begin{itemize}
+            \item Definition der zu entwickelnden Software
+            \item Festlegung der betrieblichen Rahmenbedingungen
+        \end{itemize}
+        \item \fatsf{Software-Entwicklung}
+        \begin{itemize}
+            \item Design, Implementierung und Verifikation des Codes
+        \end{itemize}
+        \item \fatsf{Software-Validierung}
+        \begin{itemize}
+            \item Sicherstellen, dass die Software den Kundenanforderungen entspricht
+        \end{itemize}
+        \item \fatsf{Software-Evolution}
+        \begin{itemize}
+            \item Anpassung und Modifikation an neue Kunden- oder Marktanforderungen
+        \end{itemize}
+    \end{enumerate}
+
+\subsubsection*{Software-Engineering-Prozessmodelle}
+
+    Software-Prozessmodelle sind \fatsf{abstrakte Beschreibungen}, die eine bestimmte Sicht auf den Entwicklungsprozess bieten\\
+    Laut lan Sommerville beinhalten Prozessmodelle:
+    \begin{itemize}
+        \item Entwicklungsaktivitäten
+        \item Softwareprodukte (z.B. Architektur, Code, Dokumentation)
+        \item Rollen der beteiligten Personen
+    \end{itemize}
+    \fatsf{Beispiele für Software-Prozessmodelle:}
+    \begin{itemize}
+        \item \fatsf{Wasserfallmodell} (linear, sequenzieller Entwicklungsprozess)
+        \item \fatsf{Spiralmodell} (iterativer, risikogesteuerter Ansatz)
+        \item \fatsf{V-Modell (XT)} (erweiterte Version des Wasserfallmodells mit Verifikations- und Validierungsschritten)
+        \item \fatsf{Extreme Programming (XP)} (agile Modell mit Fokus auf schnelles Feedback und kontinuierliche Verbesserung)
+    \end{itemize}
+    \fatsf{Hinweis:} Große Projekte verwenden oft eine \fatsf{Kombination mehrerer Prozessmodelle}, um unterschiedliche Softwarekomponenten zu entwickeln
+
+\subsection{Part II: The Waterfall Model}
+\subsubsection*{Das Wasserfallmodell}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Software Development Processes Images/The Waterfall model.jpeg}
+\end{figure}
+
+    Ein \fatsf{generischer Prozessmodell}, das in fünf aufeinanderfolgende Phasen unterteilt ist:
+    \begin{enumerate}
+        \item \fatsf{Anforderungsanalyse und -definition}
+        \begin{itemize}
+            \item Anforderungen werden mit den Nutzern abgestimmt
+            \item Detaillierte Spezifikation der Systemanforderungen
+        \end{itemize}
+        \item \fatsf{System- und Softwaredesign}
+        \begin{itemize}
+            \item Definition der Systemarchitektur
+            \item Identifikation der grundlegenden Abstraktionen und ihrer Beziehungen
+        \end{itemize}
+        \item \fatsf{Implementierung und Unit-Testing}
+        \begin{itemize}
+            \item Umsetzung des Designs in Programmcode
+            \item Tests überprüfen, ob jede Einheit der Spezifikation entspricht
+        \end{itemize}
+        \item \fatsf{Integration und Systemtest}
+        \begin{itemize}
+            \item Einzelne Programmteile werden zusammengefügt und als Gesamtsystem getestet
+        \end{itemize}
+        \item \fatsf{Betrieb und Wartung}
+        \begin{itemize}
+            \item Nach dem Release wird das System gewartet und weiterentwickelt
+        \end{itemize}
+    \end{enumerate}
+    \fatsf{Merkmale des Wasserfallmodells:}
+    \begin{itemize}
+        \item Jede Phase liefert geprüfte Artefakte (Dokumente, Code, Spezifikationen)
+        \item Die nächste Phase beginnt erst nach Abschluss der vorherigen
+        \item Fehler führen dazu, dass vorherige Phasen wiederholt werden müssen
+        \item Ähnelt traditionellen Ingenieursprozessen (z.B. Maschinenbau)
+    \end{itemize}
+
+\subsubsection*{Kritik am Wasserfallmodell}
+
+    \begin{itemize}
+        \item \fatsf{Nicht iterativ} $\rightarrow$ Änderungen in späten Phasen sind schwierig und teuer
+        \item \fatsf{Frühe Prototypen nicht möglich} $\rightarrow$ Probleme erst spät erkannt
+        \item \fatsf{Testen erst am Ende} $\rightarrow$ Fehler früh im Prozess bleiben unentdeckt
+        \item \fatsf{Unterschiedliche Teams in verschiedenen Phasen} $\rightarrow$ Wissen geht verloren
+    \end{itemize}
+    \fatsf{Zitat:} Bereits 1970 als problematisches Modell für Softwareentwicklung erkannt (Winston Royce, Managing the Development of Large Software Systems)
+
+\subsubsection*{Das V-Modell}
+
+    Eine verbesserte Version des Wasserfallmodells mit stärkerem Fokus auf Tests.\\
+    Jede Entwicklungsphase hat eine zugehörige Testphase:
+    \begin{itemize}
+        \item Anforderungsspezifikation $\rightarrow$ Akzeptanztestplan
+        \item Systemdesign $\rightarrow$ Systemintegrationtestplan
+        \item Detailliertes Design $\rightarrow$ Subsystem-Integrationstestplan
+        \item Implementierung $\rightarrow$ Modul-/Unit-Testplan
+    \end{itemize}
+    \fatsf{Merkmale:}
+    \begin{itemize}
+        \item Klare Struktur
+        \item Strenge Dokumentation
+        \item Gut geeignet für sicherheitskritische Systeme (z.B. Medizintechnik, Luftfahrt)
+    \end{itemize}
+
+\subsubsection*{Kritik am V-Modell}
+
+    \begin{itemize}
+        \item Nicht iterativ $\rightarrow$ Änderungen bleiben teuer
+        \item Unflexibel bei sich ändernden Anforderungen
+        \item Nur geeignet für kleine, stabile Projekte mit klaren Anfroderungen
+    \end{itemize}
+
+\subsection{Part III: Agile Development}
+\subsubsection*{Agile Softwareentwicklung}
+
+    \fatsf{Kernpunkte (Key Points)}
+    \begin{itemize}
+        \item Wartungszentrierter Prozess
+        \item Schnelle Entwicklung trotz sich ändernder Anforderungen
+        \item Kurze und schnelle Entwicklungszyklen (\enquote{agil})
+        \item Ursprünglich für kleine bis mittelgroße Teams (3-9 Personen) entwickelt
+    \end{itemize}
+    \fatsf{Grundannahmen (Assumptions)}
+    \begin{itemize}
+        \item \fatsf{Enge Zusammenarbeit} zwischen Analysten, Kunden, Entwicklern und Testern
+        \item \fatsf{Disziplinierte Praktiken und kontinuierliches Feedback} notwendig
+        \item \fatsf{Flexibles und wartbares Design} durch bewährte Designprinzipien
+        \item \fatsf{Agilität ersetzt nicht die Validierung!} Der Kunde muss als Teammitglied mitwirken
+    \end{itemize}
+
+\subsubsection*{Agiles Manifest (Manifesto for Agile Software Development)}
+\begin{enumerate}
+    \item \fatsf{Individuen \& Interaktionen statt Prozesse \& Tools}
+    \begin{itemize}
+        \item Das beste Tool nützt nichts, wenn das Team nicht zusammenarbeitet
+        \item Kleine Teams $\rightarrow$ wachsen \& schrumpfen je nach Bedarf
+        \item Regelmäßige Reflexionen über Prozesse \& Arbeitsumfeld
+    \end{itemize}
+    \item \fatsf{Funktionierende Software statt umfassende Dokumentation}
+    \begin{itemize}
+        \item \fatsf{Dokumentation soll inkrementell erfolgen, nicht upfront}
+        \item Kein Vorwand, um Doku ganz zu überspringen
+        \item \fatsf{Code spielt zentrale Rolle} und muss sagar besser dokumentiert sein
+    \end{itemize}
+    \item \fatsf{Zusammenarbeit mit dem Kunden statt Vertragsverhandlungen}
+    \begin{itemize}
+        \item Verträge sollen \fatsf{Zusammenarbeit mit dem Kunden definieren}, nicht nur feste Fristen und Preise
+        \item \fatsf{Feste Preis- \& Terminverträge scheitern oft}, da Anforderungen sich ändern
+        \item Der Kunde will aber trotzdem wissen, was er für sein Geld bekommt
+    \end{itemize}
+    \item \fatsf{Reaktion auf Veränderungen statt striktes Befolgen eines Plans}
+    \begin{itemize}
+        \item \fatsf{Pläne sind wichtig, aber müssen flexiblel bleiben}
+        \item Anforderungen ändern sich $\rightarrow$ Prozesse müssen anpassbar sein
+    \end{itemize}
+\end{enumerate}
+\subsubsection*{Agile Methoden \& Prozesse}
+Es gibt viele agile Methoden, darunter:
+\begin{itemize}
+    \item Extreme Programming (XP)
+    \item SCRUM (Projektmanagement-Methode)
+    \item Agile Unified Process (AUP)
+    \item Feature-Driven Development (FDD)
+    \item Crystal Methodology
+    \item Adaptive Software Development (ASD)
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Software Development Processes Images/Scope und Level of Support.jpeg}
+\end{figure}
+\subsection{Part IV: Extreme Programming (XP)}
+
+    XP besteht aus einer Reihe von \fatsf{einfachen, aber stark vernetzten Praktiken}, die darauf abzielen, Software effizient und flexibel zu entwickeln
+
+\subsubsection*{Kunde als Teil des Teams}
+\begin{itemize}
+    \item \fatsf{Kunde definiert \& priorisiert Features}
+    \item Ist \fatsf{ständig verfügbar} für Rückfragen
+    \item Falls nicht möglich $\rightarrow$ Team kann einen \fatsf{Produktverantwortlichen (Product Owner)} benennen
+\end{itemize}
+\subsubsection*{User Stories}
+\begin{itemize}
+    \item \fatsf{Kurzbeschreibung} der Anforderungen durch den Kunden
+    \item Enthält eine \fatsf{Schätzgröße (Strory Points)} zur Aufwandseinschätzung
+    \item \fatsf{Keine technischen Datails}, da sich diese oft ändern
+\end{itemize}
+\fatsf{Gute User Stories folgen INVEST:}
+\begin{itemize}
+    \item Independent $\rightarrow$ Unabhängig von anderen Stories
+    \item Negotiable $\rightarrow$ Bis zum Sprintbeginn verhandelbar
+    \item Valuable $\rightarrow$ Brint einen echten Nutzen
+    \item Estimable $\rightarrow$ Aufwand kann eingeschätzt werden
+    \item Small $\rightarrow$ Klein genug, um pro Iteration mehrere zu implementieren
+    \item Testable $\rightarrow$ Muss überprüfbar sein
+\end{itemize}
+\fatsf{Beispiel-Template:} \enquote{Als [Rolle] möchte ich [Ziel], damit [Nutzen]}
+\subsubsection*{Akzeptanztests (Acceptance Tests)}
+\begin{itemize}
+    \item Tests werden \fatsf{vor oder während der Implementierung} erstellt
+    \item Sobald ein Akzeptanztest bestanden wird, \fatsf{darf er nie wieder fehlschlagen} (Regression vermeiden)
+\end{itemize}
+\subsubsection*{Kurze Entwicklungszyklen (Short Development Cycles)}
+\begin{itemize}
+    \item Iterationen sind \fatsf{zeitlich festgelegt} (time-boxed)
+    \item Am Ende jeder Iteration gibt es eine \fatsf{testbare Software}
+    \item Falls Features nicht rechtzeitig festig werden $\rightarrow$ \fatsf{verschieben auf spätere Iterationen}
+\end{itemize}
+\subsubsection*{Das Planungsspiel (The Planning Game)}
+\begin{itemize}
+    \item \fatsf{Geschäftsseite (Customer):} Bestimmt \fatsf{Wichtigkeit \& Priorität}
+    \item \fatsf{Entwicklerseite:} Bestimmt \fatsf{technischen Aufwand \& Konsequenzen}
+    \item \fatsf{Ergebnis:}
+    \begin{itemize}
+        \item Kunde wählt Features für den Release
+        \item Entwickler schätzen Aufwand \& setzen Zeitpläne fest
+    \end{itemize}
+\end{itemize}
+\fatsf{Iterative Planung}
+\begin{enumerate}
+    \item \fatsf{Initial Exploration (Erste Erkundung)}
+    \begin{itemize}
+        \item \fatsf{Ziel:} Erste Sammlung der wichtigsten \fatsf{User Stories}
+        \item \fatsf{Wie?}
+        \begin{itemize}
+            \item Entwickler und Kunden identifizieren \fatsf{die wichtigsten} Anforderungen in Form von \fatsf{User Stories}
+            \item Entwickler schätzen die User Stories mit \fatsf{Story Points}
+            \item Story Points messen den \fatsf{relativen Aufwand}, nicht die absolute Zeit
+            \item Beispiel: Eine Story mit \fatsf{4 Punkten} ist doppelt so aufwändig wie eine mit \fatsf{2 Punkten}
+        \end{itemize}
+        \item \fatsf{Besonderheit:} Da am Anfang noch keine Erfahrungswerte existieren, basiert die Schätzung \fatsf{zunächst auf Erfahurng und Annahmen}
+        \item Später wird die Schätzung mit der \fatsf{tatsächlichen Geschwindigkeit (Velocity)} verglichen und verbessert
+    \end{itemize}
+    \item \fatsf{Release-Planung:}
+    \begin{itemize}
+        \item \fatsf{Ziel:} Festlegung des \fatsf{ersten Release-Termins} in \fatsf{2-4 Monaten}
+        \item \fatsf{Wie?}
+        \begin{itemize}
+            \item Kunde wählt User Stories aus, die bis zum ersten Release fertig sein sollen
+            \item Die Anzahl der User Stories wird durch die \fatsf{aktuellen Erfahrungswerte zur Velocity} bestimmt
+            \item \fatsf{Velocity} = Anzahl der in einer Iteration \fatsf{abgeschlossenen Story Points}
+        \end{itemize}
+        \item \fatsf{Wichtig:}
+        \begin{itemize}
+            \item Da die Velocity in den ersten Iterationen noch nicht stabil ist, wird der Plan später \fatsf{angepasst}
+        \end{itemize}
+    \end{itemize}
+    \item \fatsf{Iterations-Planung:}
+    \begin{itemize}
+        \item \fatsf{Ziel:} Auswahl der User Stories für die nächste Iteration
+        \item \fatsf{Wie?}
+        \begin{itemize}
+            \item Kunde wählt User Stories für die nächste Iteration (Sprint)
+            \item \fatsf{Die Summer der Story Points darf die Velocity der vorherigen Iteration nicht übersteigen}
+            \item Innerhalb der Iteration \fatsf{dürfen Entwickler die Reihenfolge selbst bestimmen}
+            \item Die Iteration endet \fatsf{fix nach einer bestimmten Zeit (z.B. 2 Wochen)}, selbst wenn nicht alle geplanten Stories fertig sind
+        \end{itemize}
+    \end{itemize}
+    \item \fatsf{Task Planning (Deatilplanung der Iteration)}
+    \begin{itemize}
+        \item \fatsf{Ziel:} Zerlegen der User Stories in kleinere \fatsf{Tasks}
+        \item \fatsf{Wie?}
+        \begin{itemize}
+            \item Jede User Story wird in einzelne \fatsf{Entwicklungsaufgaben (Tasks)} aufgteilt
+            \item \fatsf{Dauer einer Aufgabe: 4-16 Stunden}
+            \item Entwickler \fatsf{wählen frei} aus, welche Aufgaben sie übernehmen
+            \item Auch Nicht-Experten können Aufgaben übernehmen $\rightarrow$ \fatsf{Lernen wird gefördert}
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+\subsubsection*{Berechnung der Velocity in XP}
+Die Velocity kann auf zwei Arten berechnet werden:
+
+\fatsf{1. Standardmethode}
+\[
+\text{Velocity} = \frac{\text{Story Points der abgeschlossenen User Stories}}{\text{Anzahl der Iterationen}}
+\]
+
+\fatsf{2. Alternative Methode}
+\[
+\text{Velocity} = \frac{\text{Story Points der abgeschlossenen User Stories}}{\text{Gesamtzeit (in Stunden)}}
+\]
+
+\fatsf{Beispiel}
+In Iteration 1 wurden zwei User Stories abgeschlossen:
+\begin{itemize}
+    \item „Verfügbare Autos anzeigen“ (2 Story Points, 1,5h Aufwand)
+    \item „Auto buchen“ (2 Story Points, 3,5h Aufwand)
+\end{itemize}
+
+Der gesamte Zeitaufwand beträgt:
+\[
+1,5h + 3,5h = 5h
+\]
+
+Die alternative Velocity-Berechnung ergibt:
+\[
+\frac{2 + 2}{1,5 + 3,5} = 0,8 \text{ Story Points pro Stunde}
+\]
+
+\fatsf{Fazit}
+\begin{itemize}
+    \item Die Velocity gibt an, \textbf{wie viele Story Points pro Iteration} umgesetzt werden können.
+    \item Sie wird mit der Zeit immer genauer.
+    \item Sie hilft bei der \textbf{Planung zukünftiger Iterationen und Releases}.
+\end{itemize}
+\subsubsection*{Simples Design (Simple Design)}
+\begin{itemize}
+    \item Fokus auf \fatsf{das aktuell Notwendige} $\rightarrow$ Kein Over-Engineering!
+    \item \enquote{\fatsf{You aren't gonna need it!} (YAGNI)}
+    \item Kein redundanter Code $\rightarrow$ \fatsf{Nutzung von Abstraktionen \& Design Patterns}
+\end{itemize}
+\subsubsection*{Testgetriebene Entwicklung (Test-Driven Development, TDD)}
+\begin{itemize}
+    \item \fatsf{Schreib zuerst Tests, dann Code!}
+    \item Ziel: Jede Funktionalität wird erst implementiert, wenn ein Test sie überprüft
+    \item Vorteile:
+    \begin{itemize}
+        \item Weniger gekoppelter Code
+        \item Mehr Vertrauen in Änderungen
+        \item Regressionen werden vermieden
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Kontinuierliche Intergration (Continuous Integration, CI)}
+\begin{itemize}
+    \item Entwickler \fatsf{integrieren Code mehmals täglich}
+    \item Nach jedem Commit wird das System \fatsf{automatisch gebaut \& getestet}
+    \item \fatsf{Voraussetzungen:}
+    \begin{itemize}
+        \item Versionskontrolle (Git, SVN, ...)
+        \item Automatisierte Builds
+        \item Automatisierte Tests
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Refactoring - Sauberer Code (Clean Code)}
+\begin{itemize}
+    \item \fatsf{Verbessern der Code-Struktur, ohne das Verhalten zu ändern}
+    \item Frage vor neuen Features: Kann ich den Code zuerst verbessern?
+    \item Falls ja $\rightarrow$ \fatsf{Refactoring durchführen, dann Feature hinzufügen}
+\end{itemize}
+\subsubsection*{Paarprogrammierung (Pair Programming)}
+Zwei Entwickler arbeiten zusammen:
+\begin{itemize}
+    \item Einer schreibt den Code
+    \item Der andere denkt strategisch mit
+    \item Rollen wechseln regelmäßig $\rightarrow$ Verhindert Wissenssilos
+\end{itemize}
+Voraussetzung: \fatsf{Ähnliches Skill-Level der Entwickler}
+\subsubsection*{Kollektive Code-Eigentümerschaft (Collective Ownership)}
+\begin{itemize}
+    \item \fatsf{Jeder darf jeden Teil des Codes ändern}
+    \item Das ganze Team ist für die Code-Qualität verantwortlich
+    \item Niemand wird für Fehler allein verantwortlich gemacht
+\end{itemize}
+\subsubsection*{Coding Standards}
+\begin{itemize}
+    \item Einheitliche Code-Richtilinien für das Team
+    \item Wichtige Prinzipien:
+    \begin{itemize}
+        \item \fatsf{\endquote{No Duplicate Code}} $\rightarrow$ Keine Code-Dopplungen
+        \item \fatsf{Einfachheit \& Verständlichkeit}
+        \item Fördert Zusammenarbeit (Pair Programming, Refactoring)
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Fazit - Wann sollte man XP nutzen?}
+\begin{itemize}
+    \item \fatsf{Gut geeignet für:}
+    \begin{itemize}
+        \item Kleine bis mittelgroße Teams (3-10 Personen)
+        \item Dynamische Prjekte mit \fatsf{häufigen Anforderungsänderungen}
+        \item Teams mit \fatsf{hoher Disziplin \& enger Kundenbeteiligung}
+    \end{itemize}
+    \item \fatsf{Nicht geeignet für:}
+    \begin{itemize}
+        \item Große, strak regulierte Projekte (z.B. Medizintechnik, Luftfahrt)
+        \item Projekte mit \fatsf{festen, unveränderlichen Anforderungen}
+        \item Teams mit \fatsf{wenig Kundenkommunikation}
+    \end{itemize}
+    \fatsf{Fazit:} XP fördert schnelle, qualitativ hochwertige Entwicklung - erfordert aber eine enge Zusammenarbeit und disziplinierte Prozesse
+\end{itemize}
+\subsection{Part V: Software Engineering: Closing Remarks}
+\subsubsection*{Fehlende Intuition bei Software}
+\begin{itemize}
+    \item Software ist weniger intuitiv als physische Materialien
+    \item Kunden, Nutzer und sogar Entwickler haben oft \fatsf{falsche Vorstellungen} über die Eigenschaften von Software
+    \item Konsequenz: \fatsf{Missverständnisse und Fehleinschätzungen}
+\end{itemize}
+\subsubsection*{Die Malleabilitätsillusion (\enquote{Software ist formbar})}
+\begin{itemize}
+    \item \fatsf{Software wirkt flexibel, ist es aber nicht!}
+    \item Sobald Software \fatsf{einmal existiert und Abhängigkeiten hat}, wird sie \fatsf{so starr wie Stein}
+    \item Änderungen sind dann \fatsf{sehr teuer \& aufwendig}
+    \item \fatsf{Lösung:}
+    \begin{itemize}
+        \item Sorgfältige Planung \& Design
+        \item Wartungsfreundliche Prozesse nutzen
+        \item Umfassende Dokumentation sicherstellen
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Form $\neq$ Funktion in der Softwareentwicklung}
+\begin{itemize}
+    \item Bei physischen Objekten gibt die Form oft Hinweise auf die Funktion
+    \item Bei Software ist das \fatsf{nicht} der Fall:
+    \begin{itemize}
+        \item Verschiedene Code-Darstellungen einer Funktion sehen unterschiedlich aus, \fatsf{machen aber dasselbe}
+    \end{itemize}
+    \item \fatsf{Warum ist die Funktion von Software nicht aus ihrem Code ablesbar?}
+    \begin{enumerate}
+        \item Code ist \fatsf{abstrakt \& textbasiert}
+        \item Die Funktion wird oft erst \fatsf{während der Ausführung sichtbar}
+    \end{enumerate}
+    \item \fatsf{Konsequenzen:}
+    \begin{itemize}
+        \item Spezifikation \& Dokumentation sind essentiell (wichtiger als in traditionellen Ingenieurwissenschaften)
+        \item Grafische Notation (z.B. UML können helfen)
+        \item Testgetriebene Entwicklung (TDD) hilft, Funktionalität aus Anwendungsfällen abzuleiten
+        \item Service-orientierte Architekturen (SOA) können Architektur und Funktionalität besser in Einklang bringen
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Wichtige Erkenntnis für Software Engineering}
+\begin{itemize}
+    \item Software-Entwicklung erfordert einen \fatsf{ingenieurwissenschaftlichen Ansatz}
+    \item Muss auf \fatsf{systematischen, wissenschaftlichen Prinzipien} basieren
+    \item Ist \fatsf{alternativlos}, weil Software ein \fatsf{immaterielles \& abstraktes Konstruktionsmaterial} ist
+\end{itemize}
+\fatsf{Fazit:} Softwareentwicklung ist kein reines \enquote{Handwerk}, sondern eine \fatsf{ingenieurmäßige Disziplin}, die durch präzise Planung, Methoden und Prinzipien gesteuert werden muss

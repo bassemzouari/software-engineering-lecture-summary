@@ -1,0 +1,601 @@
+\section{Design Patterns}
+\subsection*{UML Class Diagram Reference for Design / Implementation Phase}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/UML Class Diagram Reference 1.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/UML Class Diagram Reference 2.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/UML Class Diagram Reference 3.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/UML Class Diagram Reference 4.jpeg}
+\end{figure}
+\clearpage
+\subsection{Part I: Behavioural Design Patterns: Observer Pattern}
+\subsubsection{Observer Pattern: Motivation, Example}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/Observer Pattern: Motivation.jpeg}
+\end{figure}
+\subsubsection{Consequence of OO Design}
+\begin{defBox}
+    OOAD (Object-Oriented Analysis und Design) divides a problem into manageable \red{subtasks}
+\end{defBox}
+\begin{defBox}
+    $\Rightarrow$ Objects are responsible for \red{subtasks}\\
+    They \blue{collaborate} to accomplish complex tasks
+\end{defBox}
+\fatsf{Advantages:}
+\begin{itemize}
+    \item Each object easy to implement, understand, maintain, reuse
+    \item \blue{Divide-and-conquer} approach to design possible
+    \item Flexible combinations from different collaborations possible
+    \item \blue{Versatility}
+\end{itemize}
+\fatsf{Disadvantages:}
+\begin{itemize}
+    \item Behavior is \red{distributed} across multiple objects
+    \item \blue{Lack of clarity}(\enquote{Unübersichtlichkeit}) of \red{overall} design
+    \item Any state change of one object may affect many others
+    \item \blue{Interdependence}
+\end{itemize}
+\subsubsection{Desirable: Communication with Low Coupling}
+\begin{defBox}[title=Change Propagation]
+    \begin{itemize}
+        \item \red{Change propagation} (of object states) can be \red{hard wired}, but this couples objects together and diminishes their flexibility and potential for reuse
+        \item A flexible way is neded to allow objects to \red{inform each other about changes without strongly coupling them}
+    \end{itemize}
+\end{defBox}
+\begin{defBox}[title=Representative Scenario]
+    Separation of GUI from underlying data, such that classes defining application data and presentations can be \red{reused independently}
+\end{defBox}
+\begin{defBox}[title=Task]
+    \red{Decouple} a data model (\blue{\enquote{subject}}) from parties (\blue{\enquote{observers}}) interested in changes of its internal state
+\end{defBox}
+\begin{defBox}[title=Requirements]
+    \begin{itemize}
+        \item \red{Subject} should not need to know details about its \red{observers}
+        \item Identity and number of observers \red{not predetermined} or fixed
+        \item \red{New observer} kinds can be added to the system \red{dynamically}
+        \item \red{Polling} is an inappropritate (inefficient) communication pattern
+    \end{itemize}
+\end{defBox}
+\begin{defBox}
+    Fundamental problem: one-to-many communication relation among objects
+\end{defBox}
+\subsubsection{Observer Pattern: Pattern Structure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/ObserverPattern:Pattern Structure.jpeg}
+\end{figure}
+\begin{defBox}
+    Methods getState(), modifyState() of ConreteSubject are placeholders for implementing methods of a concrete subject that get or modify its state
+\end{defBox}
+\begin{infoBox}[title=Wie funktioniert das Observer Pattern?]
+    \begin{enumerate}
+        \item \fatsf{Subject (Subjekt)}\\
+        Das Subject ist das Objekt, das überwacht wird. Es verwaltet eine Liste von Beobachtern und stellt Methoden bereit, um:
+        \begin{itemize}
+            \item Beobachter hinzufügen (\textsf{attach} oder \textsf{subscribe})
+            \item Beobachter zu entfernen (\textsf{detach} oder \textsf{unsubscribe})
+            \item Beobachter über Änderungen zu benachrichtigen (\textsf{notifyObservers})
+        \end{itemize}
+        \item \fatsf{Observer (Beobachter)}\\
+        Ein Observer ist ein Objekt, das am Zustand des Subjekts interessiert ist. Es definiert eine Methode (\textsf{update}), die aufgerufen wird, wenn das Subjekt seinen Zustand ändert
+        \item \fatsf{ConcreteSubject (Konkretes Subjekt)}\\
+        Das konkrete Subjekt implementiert die Schnittstelle oder Basisklasse des Subjects. Es enthält den eigentlichen Zustand und die Logik zur Verwaltung der Beobachter
+        \item \fatsf{ConcreteObserver (Konkreter Beobachter)}\\
+        Der konkrete Beobachter imlementiert die Observer-Schnittstelle. ER definiert, wie er auf Zustandsänderungen des Subjekts reagiert
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Ablauf des Observer Patterns]
+    \begin{enumerate}
+        \item Der Beobachter (Observer) registriert sich beim Subjekt (Subject), um Benachrichtigungen zu erhalten
+        \item Das Subjekt ändert seinen Zustand und ruft die Methode \textsf{notifyObservers()} auf
+        \item Das Subjekt informiert alle registrierten Beobachter, indem es deren \textsf{update}-Methode aufruft
+        \item Die Beobachter reagieren auf die Benachrichtigung und passen sich entsprechend an
+    \end{enumerate}
+\end{infoBox}
+\subsubsection{Observer Pattern: Example}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/Observer Pattern: Example.jpeg}
+\end{figure}
+\subsubsection{Observer Pattern: Adding and Removing Observers}
+\begin{codeBlock}{}
+    public abstract class Subject{
+        private CopyOnWriteArrayList<Observer> observers = new CopyOnWriteArrayList<>();
+        public void attach(Observer obs){
+            if (obs == null){
+                throw new IllegalArgumentException();
+            }
+            observers.addIfAbsent(obs);
+        }
+        public void detach(Observer obs){
+            if (obs == null){
+                throw new IllegalArgumentException();
+            }
+            observers.remove(obs);
+        }
+        public void notifyObservers(){...}
+    }
+\end{codeBlock}
+\begin{defBox}[title=Remarks]
+    \begin{itemize}
+        \item Observers are added and removed from a list of observers
+        \item Attention: In amulti-threaded environment additional care is necessary, for instance, synchronization and/or use of thread-safe data structures (here: CopyOnWriteArrayList)
+    \end{itemize}
+\end{defBox}
+\subsubsection{Observer Pattern: Change Notification}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/Observer Pattern: Change Notification.jpeg}
+\end{figure}
+\subsubsection{Abstract Coupling}
+\begin{defBox}
+    Observer pattern realizes \red{abstract coupling} between subject and observers
+\end{defBox}
+\begin{defBox}[title=Abstract Coupling]
+    \begin{itemize}
+        \item Implementation of \blue{attach(), detach(), notify()} operations need to know only observer \red{interface}
+        \begin{itemize}
+            \item No coupling to observer \red{implementation}
+        \end{itemize}
+        \item Observers can be added and removed \red{dynamically}
+    \end{itemize}
+\end{defBox}
+\subsubsection{Observer Patterns: Consequences}
+\begin{defBox}[title=Advantages]
+    \begin{itemize}
+        \item \red{Abstract coupling} between \blue{Subject} and \blue{Observer}
+        \item Support for \red{broadcast communication} \enquote{ausstrahlen} (as opposed to polling):
+        \begin{itemize}
+            \item \blue{notifyObservers()} does not specify its receivers
+            \item Sender does not know the (concrete) type of the receiver
+        \end{itemize}
+    \end{itemize}
+\end{defBox}
+\begin{defBox}[title=Disadvantages and Limitations (control over updates)]
+    \begin{itemize}
+        \item Danger of \red{update cascades} to observers and their dependent objects
+        \item Update sent to \red{all observers}, but not \red{all} might be interested in \red{any} change
+        \item \red{No change details}\\
+        $\Rightarrow$ Observers need to find out what has changed
+        \item \red{Uniform interface} for all observer updates:\\
+        $\Rightarrow$ Subject cannot send optional parameters to observers
+    \end{itemize}
+\end{defBox}
+\subsubsection{Model-View-Controller by Example}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/Model-View-Controller by Example.jpeg}
+\end{figure}
+\subsubsection{Concrete Subject Implementation}
+\begin{codeBlock}{}
+    public class CarInventory extends Subject{
+        private List<Car> carPool = new ArrayList<>();
+        ...
+        public void addCar(Car c){
+            if (!carPool.contains(c)){
+                carPool.add(c);
+            }
+            notifyObservers();
+        }
+        public void removeCar(Car c){
+            carPool.remove(c);
+            notifyObservers();
+        }
+    }
+\end{codeBlock}
+\begin{itemize}
+    \item \blue{CarInventory} is the ConcreteSubject
+    \item Methods addCar(), removeCar() change ConcreteSubject's state
+    \item Change notification of registered observers via notifyObserver()
+    \item Update notification takes from o.update(this)
+\end{itemize}
+\subsubsection{Observer Update Example}
+\begin{codeBlock}{}
+    public class CarInventoryView extends JFrame implements Observer{
+        ...
+        public CarInventoryView(CarInventory inventory){
+            ...
+            inventory.attach(this);
+            fillTable(inventory);
+            ...
+        }
+        @Override
+        public void update(Subject subject){
+            fillTable((CarInventory) subject);
+        }
+        private void fillTable(Carinventory inventory){
+            ...
+            inventory.getCars().forEach(c -> model.addRow(...));
+        }
+        ...
+    }
+\end{codeBlock}
+\blue{CarInventoryView}
+\begin{itemize}
+    \item is a ConcreteObserver
+    \item implements Observer interface
+    \begin{itemize}
+        \item update(Subject) called by notifyObserver() of concrete Subject CarInventory, knows \red{inventory}
+        \item update() causes full table refresh
+    \end{itemize}
+\end{itemize}
+\subsubsection{Implementation Alternatives I: Who Informs Observers of State Change?}
+\begin{enumerate}
+    \item State changing methods notify observers (as seen)
+    \begin{codeBlock}{}
+        class CarInventory extends Subject{
+            List<Car> pool = new LinkedList<Car>();
+            public void removeCar(Car c){
+                pool.remove(c);
+                notifyObservers();
+            }
+            ...
+        }
+    \end{codeBlock}
+    \begin{infoBox}
+        Beobachter werden sofort bei jeder Änderung benachrichtigt. Dies ist einfach zu implementieren, kann jedoch ineffizient sein, wenn viele Änderungen in kurzer Zeit stattfinden.
+    \end{infoBox}
+    \item Client triggers update
+        \begin{codeBlock}{}
+            class Subject {
+                private List<Observer> observers = new ArrayList<>();
+                public void addObserver(Observer observer) {
+                    observers.add(observer);
+                }
+                public void notifyObservers() {
+                    for (Observer observer : observers) {
+                        observer.update();
+                    }
+                }
+            }
+            interface Observer {
+                void update();
+            }
+            class CarInventory extends Subject {
+                private List<Car> pool = new LinkedList<>();
+                public void removeCar(Car c) {
+                    pool.remove(c); // Keine automatische Benachrichtigung
+                }
+                public void addCar(Car c) {
+                    pool.add(c); // Keine automatische Benachrichtigung
+                }
+            }
+            class Car {}
+            class InventoryObserver implements Observer {
+                @Override
+                public void update() {
+                    System.out.println("Inventory updated!");
+                }
+            }
+            // Hauptprogramm
+            public class Main {
+                public static void main(String[] args) {
+                    CarInventory inventory = new CarInventory();
+                    InventoryObserver observer = new InventoryObserver();
+                    inventory.addObserver(observer);
+            
+                    Car car1 = new Car();
+                    Car car2 = new Car();
+            
+                    // Der Client führt mehrere Änderungen aus
+                    inventory.addCar(car1);
+                    inventory.addCar(car2);
+                    inventory.removeCar(car1);
+
+                    // Der Client löst die Benachrichtigung aus
+                    inventory.notifyObservers();
+                }
+            }
+        \end{codeBlock}
+        Die Methode notifyObservers() wird vom Client nach Abschluss der Änderungen aufgerufen. Dadurch wird nur eine einzige Benachrichtigung gesendet, auch wenn mehrere Änderungen durchgeführt werden
+\end{enumerate}
+\begin{defBox}
+    \red{Advantage (of 1.)}\\
+    \begin{itemize}
+        \item Close to actual subject state change
+        \item Observers will be reliably notified
+    \end{itemize}
+    \red{Disadvantage (of 1.)}
+    \begin{itemize}
+        \item If several changes performed at once, then each triggers notification: Causing, for example, many screen refreshes
+    \end{itemize}
+\end{defBox}
+\subsubsection{Implementation Alternatives II: Passing Update Information}
+\begin{enumerate}
+    \item \red{Pull Mode} (as seen)
+    \begin{codeBlock}{}
+        public class CarInventoryView implements Observer{
+            @Override
+            public void update(Subject subject){
+                fillTable((CarInventory) subject);
+            }
+        }
+    \end{codeBlock}
+    \begin{itemize}
+        \item \blue{Concrete observer queries}
+        \item \blue{concrete subject for change}
+        \item Often too coarse gained, anything might be changed (Here: full table content refresh)
+    \end{itemize}
+    \begin{infoBox}
+        Im Pull-Modus ruft der Beobachter (Observer) die Informationen über Änderungen direkt beim Subjekt (Subject) ab, wenn er über eine Änderung benachrichtigt wird. Das Sujekt gibt keine spezifischen Details zur Änderung weiter.\\
+        \fatsf{Eigenschaften:}
+        \begin{itemize}
+            \item Der Beobachter fragt den vollständigen Zustand des Subjekts ab (z.B. das gesamte Auto-Inventar)
+            \item Geeignet für einfache Szenarien, aber möglicherweise ineffizient, da der gesamte Zustand unabhängig von der Art der Änderung neu geladen wird
+            \item \fatsf{Nachteil:} Änderungen sind oft zu grobgranular, was unnötige Operationen (z.B. vollständige Tabellenaktualisierung) verursachen kann
+        \end{itemize}
+    \end{infoBox}
+    \item \red{Push Mode}
+    \begin{codeBlock}{}
+        public class CarInventoryView implements Observer{
+            @Override
+            public void update(Subject subject, Change e){
+                if (e.getKind() == Change.CarDeletion){
+                    deleteRowForCar(e.getCar());
+                } else {
+                    ...
+                }
+            }
+        }
+    \end{codeBlock}
+    \begin{itemize}
+        \item Change aspect \blue{parameter} of update()
+        \item Makes efficient view update possible
+    \end{itemize}
+    \begin{infoBox}
+        Im Push-Modus sendet das Subjekt spezifische Informationen über die Änderung an den Beobachter. Der Beobachter kann die Änderung effizient verarbeiten, ohne den gesamten Zustand des Subjekts abzufragen\\
+        \fatsf{Eigenschaften:}
+        \begin{itemize}
+            \item Das Subjekt sendet detaillierte Informationen zur Änderung (z.B. Art der Änderung und betroffene Daten)
+            \item Ermöglicht dem Beobachter, die Änderung effizient zu verarbeiten (z.B. nur eine Zeile aktualisieren oder entfernen)
+            \item \fatsf{Vorteil:} Präzise und effizient, besonders bei großen oder komplexen Daten
+        \end{itemize}
+    \end{infoBox}
+\end{enumerate}
+\subsubsection{Implementation Alternatives III: Concrete Subject with Subclass Hierarchy}
+\begin{codeBlock}{}
+    class ComplexSubject extends Subject{
+        Object o = new Object();
+        public void trickyChange(){
+            o = new Object(); // not so tricky ...
+            notifyObservers();
+        }
+    }
+    class MoreCmplexSubject extends ComplexSubject{
+        Object anotherO = ...;
+        @Override
+        public void trickyChange(){
+            super.trickyChange(); //causes notification
+            another() = ...;
+            notifyObservers(); //another notification
+        }
+    }
+\end{codeBlock}
+\blue{Problem:}\\
+Invocation of trickyChange() on ComplexSubject causes \red{premature notification}, because of call to super.trickyChange() in super class
+\begin{codeBlock}{}
+    class ComplexSubject extends Subject{
+        Object o = new Object();
+        public void trickyChange(){
+            doTrickyChange();
+            notifyObservers();
+        }
+        protected void doTrickyChange(){
+            o = new Object();
+        }
+    }
+    class MoreCmplexSubject extends ComplexSubject{
+        Object anotherO = ...;
+        @Override
+        public void trickyChange(){
+            super.doTrickyChange(); //avoid notification
+            another() = ...;
+        }
+    }
+\end{codeBlock}
+\blue{Solution:}\\
+Separate logic for model change and notification invocation into different methods (use \red{Template Method Pattern})
+\subsubsection{Implementation Alternatives IV: Specifying Modifications of Interest}
+\blue{Specify relevant aspect of model when registering observer}
+\begin{itemize}
+    \item \blue{addObserver(Observer, Aspect):} 
+    Aspect encodes the kind of events of interest for \red{that} Observer
+    \item In case of a state change, subject calls \blue{triggerUpdatefor(anAspect)} on itself, which informs all observers that are registered for anAspect
+\end{itemize}
+\blue{Different observer interfaces for different aspects} (common JAVA use case)
+\begin{itemize}
+    \item Different \red{observer interfaces} are available\\
+    For example: \blue{ActionListener, MouseListener}
+    \item Subject \red{informs} listeners on changes they are interested in\\
+    For example: Mouse click on a button
+    \item Subject provides \red{registration methods} for supported listener interfaces \\
+    For example: \blue{addMouseListener(MouseListener)}
+    \item Observers implement \red{listener interfaces} (often inner classes of view)
+\end{itemize}
+\subsection{Part II: Creational Pastterns: Factory Method}
+\subsubsection{Factory Method: Motivation, Example}
+Assume we develop a \red{framework} for appliccations that can present \red{multi-format documents} to the user\\
+Need to support a wide variety of application software:
+\begin{itemize}
+    \item Text editor 
+    \item Word processor
+    \item Vector drawing 
+    \item document Viewer, ...
+\end{itemize}
+\begin{defBox}
+    The framework must be able to manage \red{different} kinds of documents with \red{common}
+\end{defBox} 
+\clearpage
+\subsubsection{Common Functionality for Document Management}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/Common Functionality for Document Management.jpeg}
+\end{figure}
+\subsubsection{Factory Method: Intent, Example}
+\begin{defBox}
+    Declare \red{interface for object creation}, let subclasses decide class to instantiate: Factory Method lets an application class \red{defer instantioation} to subclasses
+\end{defBox}
+\begin{infoBox}[title=Intent (Absicht)]
+    Das \fatsf{Factory Method Pattern} ermöglicht einer Klasse, die Instanziierung ihrer Objekte an Unterklassen zu delegieren. Das Hauptziel ist, eine \fatsf{Schnittstelle für die Objekterstellung} bereitzustellen, ohne dass die konkrete Klasse, die instanziiert wird bekannt sein muss. Dadurch wird der Code flexibler und leichter erweiterbar
+\end{infoBox}
+\begin{codeBlock}{}
+    public abstract class Document{
+        public abstract void open();
+        public abstract void close();
+    }
+    public abstract class Application{
+        private List<Document> docs = new ArrayList<>();
+        public void newDocument(){ //manage documents
+            Document doc = createDocument();
+            docs.add(doc);
+            doc.open();
+        }
+        //factory method delegates creation to subclass
+        public abstract Document createDocument();
+    }
+\end{codeBlock}
+\blue{Concrete subclasses}
+\begin{codeBlock}{}
+    public class TextDocument extends Document{
+        //implementation of the abstract methods
+    }
+    public class MyApplication extends Application{
+        public Document createDocument(){
+            return new TextDocument();
+        }
+    }
+\end{codeBlock}
+\subsubsection{Factory Method: UML Class Diagram of Example}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/UML Class Diagram of Example.jpeg}
+\end{figure}
+\subsubsection{Factory Method: General Pattern Structure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/General Pattern Structure.jpeg}
+\end{figure}
+\subsubsection{Factory Method: Consequences and Variants}
+\blue{Consequences}
+\begin{itemize}
+    \item The client application code only knows the \red{Product} interface $\Rightarrow$ it works for \red{any} \blue{ConcreteProduct} class
+    \item Product provides a \red{hook} for subclasses $\Rightarrow$ can provide an etended version of an object via hook
+\end{itemize}
+\blue{Variants}
+\begin{enumerate}
+    \item \red{Creator} is abstract (as seen)
+    \item \red{Creator} is concrete and provides a reasonable default implementation
+\end{enumerate}
+\subsection{Part III: Creational Patterns: Abstract Factory}
+\subsubsection{Abstract Factory: Motivation, Example}
+\begin{defBox}
+    How to create a family of \red{related classes} that imlement a (set of) \red{common interface}(s)?
+\end{defBox}
+\begin{defBox}[title=Example(Support of different database formats)]
+    Requirements:
+    \begin{itemize}
+        \item An application must support different database formats: \red{Ability to select database format at startup time}
+        \item An application must support as yet \red{unknown} database formats: \red{Make the implementation oblivious of a specific database format}
+    \end{itemize}
+\end{defBox}
+\subsubsection{Variability with a Common Interface: Example}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/Variability with a Common Interface.jpeg}
+\end{figure}
+\begin{defBox}
+    Interface for \blue{ResultSet} enables iteration over result of an SQL query, \red{independent of} concrete database implementation
+\end{defBox}
+\subsubsection{Abstract Factory: Motivation, Example}
+\begin{itemize}
+    \item Not sufficient for \red{full code abstraction} from concrete database Class hierarchy of 
+    \begin{itemize}
+        \item \blue{CallableStatements}
+        \item \blue{PreparedStatements}
+        \item \blue{Blobs, ...}
+    \end{itemize}
+    \red{for each database} are also needed
+    \item Code interacting with the database can then deal with \blue{ResultSets} \red{and} \blue{SQL statements} without referring to the concrete classes, such as \blue{FirebirdResultSet}
+\end{itemize}
+\begin{defBox}
+    \red{But:} Concrete implementation (exact subclass) must still be known when creating the statements, result sets, etc.
+\end{defBox}
+\begin{defBox}
+    How to avoid the need to known the concrete type \red{at creation time}?
+\end{defBox}
+\blue{We want to avoid having to write, for example:}\\
+PreparedStatement ps = new FireBirdPreparedStatement();
+\begin{defBox}[title=Why?]
+    \begin{itemize}
+        \item Hard coding product type makes it impossible to select a database format \red{only at startup time}, with the remaining code being \red{independent}
+        \item Even \red{static changes} (\enquote{find-and-replace}) are problematic, because it is easy to miss a constructor and obtain a wrong object
+    \end{itemize}
+\end{defBox}
+\blue{Solution:}\red{Abstract} Factory
+\subsubsection{Abstract Factory: General Pattern Structure as UML Class Diagram}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/Abstract Factory.jpeg}
+\end{figure}
+\begin{codeBlock}{}
+    public AbstractProductA createProdA(){
+        return new ProductA1();
+    }
+    public AbstractProductB createProdB(){
+        return new ProductB1();
+    }
+\end{codeBlock}
+\subsubsection{Abstract Factory: Instantiated to Example}
+\begin{itemize}
+    \item Abstract factory: \blue{DBConnection}
+    \item Concrete factory: \blue{FirebirdConnection}
+    \item Clients can create a \red{statement}, etc., without knowing the concrete DB type: Statement s = conncetion.createStmt()
+    \item To interact with different databases, \blue{connection} is \red{initialized} suitably: \blue{conncetion} = DriverManager.getConnection("org.firebird.Driver");
+    \item Remaining client code is \red{independent} of concrete DB type
+\end{itemize}
+\clearpage
+\subsubsection{Abstract Factory Pattern: Product Side}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Design Pattern Images/Product Side.jpeg}
+\end{figure}
+\subsubsection{Abstract Factory: Consequences}
+\begin{itemize}
+    \item \blue{Abstracts away from concrete products}\\
+    Clients unaware of concrete Products they use, even at creation time
+    \item \blue{Changing product families is easy}\\
+    Changing one code line can exchange a whole product family
+    \item \blue{Ensures consistency among products}\\
+    Product selection encapsulated in one statement, one cannot mix product types accidentally\\
+    Prevents, for example, MySqlBlob from being used with a DB2 database
+    \item \red{Adding unforessen kinds of products is expensive}\\
+    Need to change the abstract factory and all its subclasses
+    \item \red{Object creation follows non-standard pattern}\\
+    Clients must know how to use \red{factory} rather than a constructor
+\end{itemize}
+\subsubsection{Factory Method vs. Abstract Factory}
+\begin{table}[H]
+    \centering
+    \rowcolors{2}{\thepagecolor}{fgcolor!10!\thepagecolor}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{lll}
+        \toprule
+        & Factory Method & Abstract Factory \\
+        \midrule
+        Product & Single & Family\\
+        Product declaration & Client & Startup \\
+        Product exchange & Concrete product & Abstract product\\
+        Creation & Local(Creator) & Selection of Factory\\
+        \bottomrule
+    \end{tabular}
+\end{table}

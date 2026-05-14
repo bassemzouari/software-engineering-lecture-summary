@@ -5,6 +5,8 @@ Software Engineering course covering software architecture,
 requirements engineering, software quality, design principles,
 testing, refactoring, and software development processes.
 
+> Language: German 🇩🇪
+
 The project focuses on structured technical documentation,
 software design methodologies, object-oriented principles,
 and modern software engineering practices.
